@@ -1,0 +1,170 @@
+//
+   Created by yinbin on 2015/8/5.
+
+extends layout_login
+
+block content
+  .login-layout
+    style(type='text/css').
+      .login-layout {
+        background-image: url("assets/images/dw.jpg") !important;
+        background-position: center;
+        background-repeat: no-repeat;
+      }
+
+      .login-layout .widget-box {
+        /*background-image: url("assets/images/dw.jpg"); !important;*/
+        background-position-x: 800px;
+        background-position-y: 600px;
+        background-color: rgba(255, 255, 255, 0.5);
+        border-bottom: 0 none;
+        box-shadow: none;
+        margin-left: -15%;
+        overflow: hidden;
+        padding: 6px;
+        position: relative;
+        transform: scale(0, 1) translate(-150px);
+        visibility: hidden;
+        width: 130%;
+
+      }
+    center(style="padding-top:50px;")
+      //img(src='assets/images/z.png', style='width: 850px;')
+      h1 中石油书吧ＡＰＰ管理系统
+    .main-container
+      .main-content
+        .row
+          .col-sm-10.col-sm-offset-1
+            .login-container
+              .space-6
+              .position-relative
+                #login-box.login-box.visible.widget-box.no-border(style='margin-top: 100px')
+                  .widget-body
+                    .widget-main
+                      h4.header.blue.lighter.bigger
+                        img(src='assets/images/dldn.png', style='width: 30px;')
+                        |                                             用户登录
+                      div(style="color:red;")=msg
+                      .space-6
+                      form(action='login', method='post')
+                        fieldset
+                          label.block.clearfix
+                            span.block.input-icon.input-icon-right
+                              input.form-control(type='text', name='username', placeholder='请输入您的用户名')
+                              img(src='assets/images/usertubiao.png', style='display: inline-block;position: absolute;right: 5px;top: 8px;width: 20px;')
+                          label.block.clearfix
+                            span.block.input-icon.input-icon-right
+                              input.form-control(type='password', name='password', placeholder='密码')
+                              img(src='assets/images/mima.png', style='display: inline-block;position: absolute;right: 5px;top: 8px;width: 20px;')
+                          .space
+                          .clearfix
+                            label.inline
+                              input(type='checkbox', style='vertical-align:middle; margin-top:0;')
+                              span.lbl  记住密码
+                            button.width-30.pull-right.btn.btn-sm.btn-primary(type='submit')
+                              | 登录
+                          .space-4
+                      .social-login.center
+                    // /widget-main
+                    .toolbar.clearfix
+                      //div
+                          a.forgot-password-link(href='#', onclick="show_box('forgot-box'); return false;")
+                              span(style='color:white;') 忘记密码?
+                  // /widget-body
+                // /login-box
+                #forgot-box.forgot-box.widget-box.no-border
+                  .widget-body
+                    .widget-main
+                      h4.header.red.lighter.bigger
+                        i.icon-key
+                        |                                            找回密码
+                      .space-6
+                      p
+                        | 请输入您的注册邮箱
+                      form
+                        fieldset
+                          label.block.clearfix
+                            span.block.input-icon.input-icon-right
+                              input.form-control(type='email', placeholder='Email')
+                              i.icon-envelope
+                          .clearfix
+                            button.width-35.pull-right.btn.btn-sm.btn-danger(type='button',onclick="alert('近期上线，敬请期待')")
+                              i.icon-lightbulb
+                              |                                                         找回!
+                    // /widget-main
+                    .toolbar.center
+                      a.back-to-login-link(href='#', onclick="show_box('login-box'); return false;")
+                        | 返回登录
+                        i.icon-arrow-right
+                  // /widget-body
+                // /forgot-box
+                #signup-box.signup-box.widget-box.no-border
+                  .widget-body
+                    .widget-main
+                      h4.header.green.lighter.bigger
+                        i.icon-group.blue
+                        |                                             New User Registration
+                      .space-6
+                      p  Enter your details to begin:
+                      form
+                        fieldset
+                          label.block.clearfix
+                            span.block.input-icon.input-icon-right
+                              input.form-control(type='email', placeholder='Email')
+                              i.icon-envelope
+                          label.block.clearfix
+                            span.block.input-icon.input-icon-right
+                              input.form-control(type='text', placeholder='Username')
+                              i.icon-user
+                          label.block.clearfix
+                            span.block.input-icon.input-icon-right
+                              input.form-control(type='password', placeholder='Password')
+                              i.icon-lock
+                          label.block.clearfix
+                            span.block.input-icon.input-icon-right
+                              input.form-control(type='password', placeholder='Repeat password')
+                              i.icon-retweet
+                          label.block
+                            input.ace(type='checkbox')
+                            span.lbl
+                              | I accept the
+                              a(href='#') User Agreement
+                          .space-24
+                          .clearfix
+                            button.width-30.pull-left.btn.btn-sm(type='reset')
+                              i.icon-refresh
+                              |                                                         重置
+                            button.width-65.pull-right.btn.btn-sm.btn-success(type='button')
+                              | Register
+                              i.icon-arrow-right.icon-on-right
+                    .toolbar.center
+                      a.back-to-login-link(href='#', onclick="show_box('login-box'); return false;")
+                        i.icon-arrow-left
+                        |                                             Back to login
+                  // /widget-body
+                // /signup-box
+              // /position-relative
+          // /.col
+        // /.row
+    // /.main-container
+    // basic scripts
+    //if !IE
+    script(src='assets/js/jquery-2.0.3.min.js')
+    // <![endif]
+    //if IE
+      script(src='assets/js/jquery-1.10.2.min.js')
+    //if !IE
+    script(type='text/javascript').
+      window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+    // <![endif]
+    //if IE
+      script(type='text/javascript').
+        window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>" + "<" + "/script>");
+    script(type='text/javascript').
+      if ("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+    // inline scripts related to this page
+    script(type='text/javascript').
+      function show_box(id) {
+        jQuery('.widget-box.visible').removeClass('visible');
+        jQuery('#' + id).addClass('visible');
+      }

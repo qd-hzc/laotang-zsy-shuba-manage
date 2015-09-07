@@ -1,0 +1,171 @@
+//
+   Created by fy on 15-9-4.
+extends ../layout
+
+block content
+  style.
+    .bootbox-body {
+      height: 100px !important;
+      overflow: hidden !important;
+    }
+  .main-content
+    #breadcrumbs.breadcrumbs
+      script(type='text/javascript').
+        try {
+          ace.settings.check('breadcrumbs', 'fixed')
+        } catch (e) {
+        }
+      ul.breadcrumb
+        li
+          i.icon-home.home-icon
+          a(href='#') Home
+        li
+          a(href='#') Tables
+        li.active jqGrid plugin
+      // .breadcrumb
+      #nav-search.nav-search
+        form.form-search
+          span.input-icon
+            input#nav-search-input.nav-search-input(type='text', placeholder='Search ...', autocomplete='off')
+            i.icon-search.nav-search-icon
+      // #nav-search
+    .page-content
+      .page-header
+      // /.page-header
+      .row
+        .col-xs-12
+          // PAGE CONTENT BEGINS
+          form#search-form-id
+            table.searchTable
+              tr
+                td
+                  | 分类名称：
+                td
+                  input.col-xs-10.col-sm-5(type='text' , name='name', placeholder='')
+                td
+                  | 状态：
+                td
+                  //0：失效，1：有效
+                  select#status.col-xs-12.clo-sm-10(style="width:180px;", name='status',placeholder='')
+                    option(value='') 全部用户
+                    option(value='0') 无效
+                    option(value='1') 有效
+                td
+              tr
+                td
+                  | 创建起始日期：
+                td
+                  input.date.form-control(type="text",name="beginDate",data-date-format="yyyy-mm-dd")
+                td
+                  | 创建结束日期：
+                td
+                  input.date.form-control(type="text",name="endDate",data-date-format="yyyy-mm-dd")
+                td
+                  button.btn.btn-info.btn-sm(type='submit')
+                    i.icon-ok.bigger-110
+                    |                                     搜索
+                  button.btn.btn-sm(type='reset')
+                    i.icon-undo.bigger-110
+                    |                                     重置
+          // TODO
+          .alert.alert-info(style='display: none;')
+            i.icon-hand-right
+            |                     专业报名人数：
+            span#zybmrs-id
+            | 人
+            button.close(data-dismiss='alert', style='display: none;')
+              i.icon-remove
+          table#grid-table
+          #grid-pager
+          script(type='text/javascript').
+            var $path_base = "/";//this will be used in gritter alerts containing images
+          #container(style='min-width:700px;height:400px')
+          // PAGE CONTENT ENDS
+        // /.col
+      // /.row
+    // /.page-content
+  // /.main-content
+  style.
+    .modal-body > div {
+      height: 500px;
+      overflow: scroll;
+    }
+  script(type='text/javascript').
+    var grid_selector = "#grid-table";
+    var pager_selector = "#grid-pager";
+    var search_form = '#search-form-id';
+    var _title = '分类管理';
+    var str = location.search;
+    var _url = BASE_URL + "book/category/list";
+    var _sortname = 'cdate';
+    var _sortorder = 'desc';
+    $('.date').datepicker();
+    var _postData = {};
+    var _colNames = ['分类名称', '分类图片', '状态', '创建日期', '修改日期', '操作'];
+    var _colModel = [
+      {name: 'name', width: 80, index: 'name', align: "left", sortable: true},
+      {name: 'img_path', width: 150, index: 'img_path', align: "left", sortable: true},
+      {
+        name: 'status', width: 80, index: 'status', align: "left", sortable: true,
+        formatter: function (status) {
+          if (status == 0) return "无效";
+          if (status == 1) return "有效";
+        }
+      },
+      {name: 'cdate', width: 100, index: 'cdate', align: "left", sortable: true, formatter: FORMAT.timeYMD},
+      {name: 'udate', width: 100, index: 'udate', align: "left", sortable: true, formatter: FORMAT.timeYMD},
+      {
+        name: '操作', width: 150, index: '', sortable: false,
+        formatter: function (value, options, row) {
+          var categoryId = row.id;
+          var status = row.status;
+
+          var unused = '<a class="my-a-' + categoryId + '" onclick="updateCategoryStatus(this,' + categoryId + ',0);">使之失效</a>';
+          var used = '<a class="my-a-' + categoryId + '" onclick="updateCategoryStatus(this,' + categoryId + ',1);">使之有效</a>';
+          var photo = '<a class="my-a-' + categoryId + '" onclick="uploadImg(this,' + categoryId + ')">修改图片</a>';
+
+          if (status == 0)return photo
+                  + '<span style="margin:0 10px;"></span>'
+                  + used;
+          if (status == 1)return unused;
+          return '';
+        }
+      }
+    ];
+
+    /**
+     * 更新分类状态
+     */
+    function updateCategoryStatus(owner, id, status) {
+      $.post('book/category/update/status', {id: id, status: status}, function (result) {
+        var msg = '修改失败', color = 'red';
+        if (result && result.status) msg = '修改成功', color = 'green';
+        $(owner).parent().empty().append('<span style="color:' + color + ';">' + msg + '<span>');
+        setTimeout(function () {
+          jQuery(grid_selector).trigger('reloadGrid');
+        }, 1000);
+      });
+    }
+
+    /**
+     *　上传图片方法
+     */
+    function uploadImg(owner, id) {
+      upload(owner, 'book/category/upload/img', id);
+    }
+
+    /**
+     * 服务器上传图片成功后的ｊｓｏｎｐ回调函数
+     */
+    function uploadImgJsonp(id, newImgPath, status) {
+      window.__myDialog.modal('hide');
+      var msg = '修改失败', color = 'red';
+      if (status) msg = '修改成功', color = 'green';
+      $('.my-a-' + id).parent().empty().append('<span style="color:' + color + ';">' + msg + '<span>');
+      setTimeout(function () {
+        jQuery(grid_selector).trigger('reloadGrid');
+      }, 1000);
+    }
+
+
+

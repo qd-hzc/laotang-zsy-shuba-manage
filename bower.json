@@ -1,0 +1,22 @@
+{
+  "name": "top_jiekou",
+  "version": "0.0.0",
+  "authors": [
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.5",
+    "HTML5-Reset": "~2.1.2"
+  }
+}

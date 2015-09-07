@@ -1,0 +1,161 @@
+//
+   Created by fy on 15-9-4.
+extends ../layout
+
+block content
+
+  .main-content
+    #breadcrumbs.breadcrumbs
+      script(type='text/javascript').
+        try {
+          ace.settings.check('breadcrumbs', 'fixed')
+        } catch (e) {
+        }
+      ul.breadcrumb
+        li
+          i.icon-home.home-icon
+          a(href='#') Home
+        li
+          a(href='#') Tables
+        li.active jqGrid plugin
+      // .breadcrumb
+      #nav-search.nav-search
+        form.form-search
+          span.input-icon
+            input#nav-search-input.nav-search-input(type='text', placeholder='Search ...', autocomplete='off')
+            i.icon-search.nav-search-icon
+      // #nav-search
+    .page-content
+      .page-header
+      // /.page-header
+      .row
+        .col-xs-12
+          // PAGE CONTENT BEGINS
+          form#search-form-id
+            table.searchTable
+              tr
+                td
+                  | 真实姓名：
+                td
+                  input.col-xs-10.col-sm-5(type='text' , name='name', placeholder='')
+                td
+                  | 登陆名：
+                td
+                  input.col-xs-10.col-sm-5(type='text' , name='username', placeholder='')
+                td
+                  | 状态：
+                td
+                  //0：失效，１：注册中，２：审批拒绝，３：有效
+                  select#status.col-xs-12.clo-sm-10(style="width:180px;", name='status',placeholder='')
+                    option(value='') 全部用户
+                    option(value='0') 无效用户
+                    option(value='1') 注册申请中
+                    option(value='2') 审批未通过
+                    option(value='3') 有效用户
+              tr
+                td
+                  | 注册起始日期：
+                td
+                  input.date.form-control(type="text",name="beginDate",data-date-format="yyyy-mm-dd")
+                td
+                  | 注册结束日期：
+                td
+                  input.date.form-control(type="text",name="endDate",data-date-format="yyyy-mm-dd")
+                td
+                td
+                  button.btn.btn-info.btn-sm(type='submit')
+                    i.icon-ok.bigger-110
+                    |                                     搜索
+                  button.btn.btn-sm(type='reset')
+                    i.icon-undo.bigger-110
+                    |                                     重置
+          // TODO
+          .alert.alert-info(style='display: none;')
+            i.icon-hand-right
+            |                     专业报名人数：
+            span#zybmrs-id
+            | 人
+            button.close(data-dismiss='alert', style='display: none;')
+              i.icon-remove
+          table#grid-table
+          #grid-pager
+          script(type='text/javascript').
+            var $path_base = "/";//this will be used in gritter alerts containing images
+          #container(style='min-width:700px;height:400px')
+          // PAGE CONTENT ENDS
+        // /.col
+      // /.row
+    // /.page-content
+  // /.main-content
+  style.
+    .modal-body > div {
+      height: 500px;
+      overflow: scroll;
+    }
+  script(type='text/javascript').
+    var grid_selector = "#grid-table";
+    var pager_selector = "#grid-pager";
+    var search_form = '#search-form-id';
+    var _title = '用户管理';
+    var str = location.search;
+    var _url = BASE_URL + "user/list";
+    var _sortname = 'cdate';
+    var _sortorder = 'desc';
+    $('.date').datepicker();
+    var _postData = {};
+    /*`id`, `username`, `password`, `company`, `department`, `name`, `phone`, `status`, `cdate`, `udate`*/
+    var _colNames = ['真实姓名', '公司', '部门', '登陆名', '手机号', '状态', '创建日期', '修改日期', '操作'];
+    var _colModel = [
+      {name: 'name', width: 80, index: 'name', align: "left", sortable: true},
+      {name: 'company', width: 150, index: 'company', align: "left", sortable: true},
+      {name: 'department', width: 150, index: 'department', align: "left", sortable: true},
+      {name: 'username', width: 80, index: 'username', align: "left", sortable: true},
+      {name: 'phone', width: 100, index: 'phone', align: "left", sortable: true},
+      //        formatter: function (cellvalue, options, rowObject) {
+      {
+        name: 'status', width: 120, index: 'status', align: "left", sortable: true,
+        formatter: function (status) {
+          //0：失效，１：注册中，２：审批拒绝，３：有效
+          if (status == 0) return "无效用户";
+          if (status == 1) return "注册申请中";
+          if (status == 2) return "审批未通过";
+          if (status == 3) return "有效用户";
+        }
+      },
+      {name: 'cdate', width: 100, index: 'cdate', align: "left", sortable: true, formatter: FORMAT.timeYMD},
+      {name: 'udate', width: 100, index: 'udate', align: "left", sortable: true, formatter: FORMAT.timeYMD},
+      {
+        name: '操作', width: 200, index: '', sortable: false,
+        formatter: function (value, options, row) {
+          var userId = row.id;
+          var unused = '<a onclick="updateUserStatus(this,' + userId + ',0);">使之失效</a>';
+          var used = '<a onclick="updateUserStatus(this,' + userId + ',3);">使之有效</a>';
+          var status = row.status;
+          if (status == 0)return used;
+          if (status == 1)return '<a onclick="updateUserStatus(this,' + userId + ',3);">通过</a>'
+                  + '<span style="margin:0 10px;"></span>'
+                  + '<a onclick="updateUserStatus(this,' + userId + ',2);">未通过</a>'
+                  + '<span style="margin:0 10px;"></span>'
+                  + unused;
+          if (status == 2)return '<a onclick="updateUserStatus(this,' + userId + ',3);">通过</a>'
+                  + '<span style="margin:0 10px;"></span>'
+                  + unused;
+          if (status == 3)return unused;
+          return '';
+        }
+      }
+    ];
+
+    function updateUserStatus(owner, userId, status) {
+      $.post('user/update/status', {userId: userId, status: status}, function (result) {
+        var msg = '修改失败', color = 'red';
+        if (result && result.status) msg = '修改成功', color = 'green';
+        $(owner).parent().empty().append('<span style="color:' + color + ';">' + msg + '<span>');
+        setTimeout(function () {
+          jQuery(grid_selector).trigger("reloadGrid");
+        }, 1000);
+      });
+    }
+
+
+
