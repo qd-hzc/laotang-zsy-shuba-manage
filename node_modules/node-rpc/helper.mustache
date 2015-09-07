@@ -1,0 +1,37 @@
+
+function action(url, dataAndCallbackArguments) {
+    var args = [];
+    for (var i = 0; i < (dataAndCallbackArguments.length - 1); i++) {
+        args.push(dataAndCallbackArguments[i]);
+    }
+    var callback = dataAndCallbackArguments[dataAndCallbackArguments.length - 1];
+
+    console.log('send ajax request:');
+    console.log('\turl: http://{{host}}:{{port}}' + url);
+    console.log('\tdata: ' + JSON.stringify(args));
+
+    $.ajax({
+        type: 'post',
+        url: 'http://{{host}}:{{port}}' + url,
+        data: {args: JSON.stringify(args)}
+    }).done(function (data) {
+            if (callback) callback(data);
+        }).fail(function () {
+            console.log("error");
+            if (callback) callback('error');
+        });
+}
+
+var {{RPCClientClassName}} = function(endPointPrefix){
+    this.endPointPrefix = endPointPrefix;
+};
+
+{{#methods}}
+{{RPCClientClassName}}.prototype.{{method_name}} = function(){
+    action(this.endPointPrefix+'/{{method_name}}', arguments);
+};
+{{/methods}}
+
+
+
+

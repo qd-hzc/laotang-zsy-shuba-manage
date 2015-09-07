@@ -165,10 +165,14 @@ block content
           var unused = '<a class="my-a-' + pdfId + '" onclick="updatePdfStatus(this,' + pdfId + ',0);">使之失效</a>';
           var used = '<a class="my-a-' + pdfId + '" onclick="updatePdfStatus(this,' + pdfId + ',1);">使之有效</a>';
           var update = '<a class="my-a-' + pdfId + '" onclick="updatePdf(this,' + pdfId + ')">修改</a>';
+          var deleted = '<a class="my-a-' + pdfId + '" onclick="deletePdf(this,' + pdfId + ')">删除</a>';
 
           if (status == 0)return update
                   + '<span style="margin:0 10px;"></span>'
-                  + used;
+                  + used
+                  + '<span style="margin:0 10px;"></span>'
+                  + deleted
+                  ;
           if (status == 1)return update
                   + '<span style="margin:0 10px;"></span>'
                   + unused;
@@ -184,6 +188,20 @@ block content
       $.post('book/pdf/update/status', {id: id, status: status}, function (result) {
         var msg = '修改失败', color = 'red';
         if (result && result.status) msg = '修改成功', color = 'green';
+        $(owner).parent().empty().append('<span style="color:' + color + ';">' + msg + '<span>');
+        setTimeout(function () {
+          jQuery(grid_selector).trigger('reloadGrid');
+        }, 1000);
+      });
+    }
+
+    /**
+     * 更新pdf图书的状态
+     */
+    function deletePdf(owner, id) {
+      $.post('book/pdf/delete', {id: id}, function (result) {
+        var msg = '删除失败', color = 'red';
+        if (result && result.status) msg = '删除成功', color = 'green';
         $(owner).parent().empty().append('<span style="color:' + color + ';">' + msg + '<span>');
         setTimeout(function () {
           jQuery(grid_selector).trigger('reloadGrid');

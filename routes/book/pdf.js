@@ -66,6 +66,20 @@ router.post('/update/status', function (req, res, next) {
 });
 
 /**
+ * 根据ｉｄ，删除ｐｄｆ
+ */
+router.post('/delete', function (req, res, next) {
+    var pdfId = req.body.id;
+    if (!pdfId)return;
+    pdfService.deletePdf(pdfId, function (err, result) {
+        if (err) throw err;
+        res.send({
+            status: true
+        });
+    });
+});
+
+/**
  * 更新上传pdf
  */
 var upload = multer({dest: 'public/files/pdf/'});

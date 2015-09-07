@@ -28,10 +28,14 @@ module.exports.login = function (username, password, callback) {
  * @param callback
  */
 module.exports.register = function (username, password, callback) {
+    if(!username) callback({rs: false, ms: '用户名不能为空'});
+    if(username.length<4 || username.length>10)callback({rs: false, ms: '用户名长度需在４到10之间'});
+    if(!password) callback({rs: false, ms: '密码不能为空'});
+    if(password.length<4 || password.length>10)callback({rs: false, ms: '密码长度需在４到10之间'});
     var checkSql = 'SELECT count(*) AS count FROM sys_user WHERE username = ?';
     db.pool.query(checkSql, username, function (error, row, field) {
-        if (row && row[0] && row[0].count > 1) {
-            callback({rs: false, ms: "账号重复"});
+        if (row && row[0] && row[0].count > 0) {
+            callback({rs: false, ms: "账号已经存在"});
             return;
         }// 账号重复
         var insertSql = 'INSERT INTO sys_user(username,password,status) values (?,?,?)';

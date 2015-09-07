@@ -36,6 +36,15 @@ function updateStatus(id, status, callback) {
 }
 
 /**
+ * 删除ｐｄｆ记录
+ * @param id
+ * @param callback
+ */
+function deletePdf(id,callback){
+    db.pool.query('DELETE FROM dic_pdf WHERE id = ?', [id], callback);
+}
+
+/**
  * 移动文件,并将目录同步数据库
  * @param newObj
  * @param oldObj
@@ -236,5 +245,6 @@ module.exports = {
     updateStatus: updateStatus,
     update: isPdfFileExist,
     add: addPdf,
-    loadPdf: loadPdf
+    loadPdf: loadPdf,
+    deletePdf:deletePdf
 };
