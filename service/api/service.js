@@ -3,7 +3,7 @@
  */
 'use strict';
 var db = require('../../config/db');
-var dateFormat = require('date-format');
+var date = require('../../lib/date');
 
 /**
  * 登陆
@@ -16,13 +16,16 @@ module.exports.login = function (username, password, callback) {
     if (username.length < 4 || username.length > 10) return callback({rs: false, ms: '用户名长度需在４到10之间'});
     if (!password) return callback({rs: false, ms: '密码不能为空'});
     if (password.length < 4 || password.length > 10) return callback({rs: false, ms: '密码长度需在４到10之间'});
-    var loginSql = 'SELECT id,password FROM sys_user WHERE username = ?';
+    var loginSql = 'SELECT id,password,status FROM sys_user WHERE username = ?';
     db.pool.query(loginSql, username, function (error, row, field) {
         if (row && row[0]) {
-            if (password === row[0].password) callback({rs: true, ms: row[0].id}); else callback({
-                rs: false,
-                ms: '密码错误'
-            });
+            var user = row[0];
+            if (password === user.password) {
+                if (user.status == 0) return callback({rs: false, ms: '账号被禁用'});
+                if (user.status == 1) return callback({rs: false, ms: '账号审批中'});
+                if (user.status == 2) return callback({rs: false, ms: '审批未通过'});
+                callback({rs: true, ms: user.id});
+            } else callback({rs: false, ms: '密码错误'});
         } else callback({rs: false, ms: '用户名不存在'});
     });
 };
@@ -41,9 +44,8 @@ module.exports.register = function (username, password, callback) {
     var checkSql = 'SELECT count(*) AS count FROM sys_user WHERE username = ?';
     db.pool.query(checkSql, username, function (error, row, field) {
         if (row && row[0] && row[0].count > 0) return callback({rs: false, ms: "账号已经存在"});// 账号重复
-        var insertSql = 'INSERT INTO sys_user(username,password,cdate,status) values (?,?,?)';
-        var now = dateFormat.asString('yyy-MM-dd HH:mm:ss', new Date());
-        db.pool.query(insertSql, [username, password, now, 1], function (error, result) {
+        var insertSql = 'INSERT INTO sys_user(username,password,cdate,status) values (?,?,?,?)';
+        db.pool.query(insertSql, [username, password, date.now(), 1], function (error, result) {
             if (error) return callback({rs: false, ms: '未知错误,注册失败'});
             callback({rs: true, ms: result.insertId});
         });
@@ -66,18 +68,27 @@ module.exports.listDelPdfId = function (callback) {
 };
 
 /**
+ * 返回所有结果pdf的集的数据库毁掉处理函数
+ * @param error
+ * @param row
+ * @param field
+ */
+function callbackForList(error, row, field) {
+    if (row) {
+        for (var i = 0; i < row.length; i++) row[i].json = JSON.parse(row[i].json);
+        callbackForList.callback(row);
+    } else callbackForList.callback([]);
+}
+
+/**
  * 返回可用的图书列表
  * @param categoryId
  * @param callback
  */
 module.exports.listPdfByPid = function (categoryId, callback) {
     var selectSql = 'SELECT * FROM dic_pdf WHERE  dic_category_id = ? AND status = 1';
-    db.pool.query(selectSql, [categoryId], function (error, row, field) {
-        if (row) {
-            for(var i =0;i<row.length;i++) row[i].json = JSON.parse(row[i].json);
-            callback(row);
-        } else callback([]);
-    });
+    callbackForList.callback = callback;
+    db.pool.query(selectSql, [categoryId], callbackForList);
 };
 
 /**
@@ -86,8 +97,7 @@ module.exports.listPdfByPid = function (categoryId, callback) {
  * @param callback
  */
 module.exports.searchPdf = function (searchText, callback) {
-    var selectSql = "SELECT * FROM dic_pdf WHERE name like '%?%' OR `desc` like '%?%'";
-    db.pool.query(selectSql, searchText, function (error, row, field) {
-        if (row) callback(row); else callback([]);
-    });
+    var selectSql = "SELECT * FROM dic_pdf WHERE name like ? OR `desc` like ?";
+    callbackForList.callback = callback;
+    db.pool.query(selectSql, ['%' + searchText + '%', '%' + searchText + '%'], callbackForList);
 };

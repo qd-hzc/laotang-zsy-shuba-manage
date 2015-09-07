@@ -16,6 +16,7 @@ html(lang='en')
       link(rel='stylesheet', href='/assets/css/font-awesome-ie7.min.css')
     // page specific plugin styles
     link(rel='stylesheet', href='/assets/css/jquery-ui-1.10.3.full.min.css')
+    link(rel='stylesheet',href='/assets/css/jquery.gritter.css')
     link(rel='stylesheet', href='/assets/css/datepicker.css')
     link(rel='stylesheet', href='/assets/css/ui.jqgrid.css')
     // fonts
@@ -92,6 +93,7 @@ html(lang='en')
     script(src='/assets/js/ace-elements.min.js')
     script(src='/assets/js/ace.min.js')
     script(src='/assets/js/bootbox.min.js')
+    script(src='/assets/js/jquery.gritter.min.js')
     // inline scripts related to this page
     script(type='text/javascript', src='/javascripts/format.js')
     //script(src='/assets/Highcharts-4.1.7/js/highcharts.js')
@@ -188,7 +190,7 @@ html(lang='en')
             li.active
               a(href='book/category')
                 img(src='assets/images/kckb.png' style='width:%;height:60%')
-                span.menu-text 图书分类管理
+                span.menu-text 分类管理
             li
               a(href='book/pdf')
                 img(src='assets/images/teacher-gzqk.png' style='width:%;height:60%')
@@ -196,7 +198,7 @@ html(lang='en')
             li
               a(href='about')
                 img(src='assets/images/student-xxzk.png' style='width:%;height:60%')
-                span.menu-text 关于
+                span.menu-text 关于系统
           #sidebar-collapse.sidebar-collapse
             i.icon-double-angle-left(data-icon1='icon-double-angle-left', data-icon2='icon-double-angle-right')
           script(type='text/javascript').

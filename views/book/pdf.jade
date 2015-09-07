@@ -182,6 +182,22 @@ block content
     ];
 
     /**
+     * @name 提交的请求的key的名称
+     * @message 错误消息
+     */
+    function validate(name, message) {
+      $.gritter.add({
+        title: message,
+        class_name: 'gritter-info gritter-center'
+      });
+      setTimeout(function () {
+        $('.my-add-btn-id,.my-update-btn-id').show();
+        $.gritter.removeAll();
+        $('input[name="' + name + '"],textarea[name="' + name + '"]').focus();
+      }, 2000);
+    }
+
+    /**
      * 更新pdf图书的状态
      */
     function updatePdfStatus(owner, id, status) {
@@ -262,7 +278,7 @@ block content
           '<div class="form-group"> ' +
           '<label class="col-md-3 control-label" for="name">封面图片:</label> ' +
           '<div class="col-md-8"> ' +
-          '<input type="file" name="img" class="form-control input-md"> ' +
+          '<input type="file" name="img" accept="image/*" class="form-control input-md"> ' +
           '<span class="help-block"style="margin-bottom: 0px;">预览图片:' + imgLink + '</span>' +
           '</div> ' +
           '</div> ' +
@@ -270,7 +286,7 @@ block content
           '<div class="form-group"> ' +
           '<label class="col-md-3 control-label" for="name">PDF文件:</label> ' +
           '<div class="col-md-8"> ' +
-          '<input type="file" name="pdf" class="form-control input-md"> ' +
+          '<input type="file" name="pdf" accept="application/pdf" class="form-control input-md"> ' +
           '<span class="help-block" style="margin-bottom: 0px;">预览PDF:' + pdfLink + '</span>' +
           '</div> ' +
           '</div> ' +
@@ -387,12 +403,12 @@ block content
           '<div class="form-group"> ' +
           '<label class="col-md-3 control-label" for="name">封面图片:</label> ' +
           '<div class="col-md-8"> ' +
-          '<input type="file" name="img" class="form-control input-md"> ' +
+          '<input type="file" name="img" accept="image/*" class="form-control input-md"> ' +
           '</div> ' +
           '</div> ' +
 
           '<div class="form-group"> ' +
-          '<label class="col-md-3 control-label" for="name">PDF文件:</label> ' +
+          '<label class="col-md-3 control-label" accept="application/pdf" for="name">PDF文件:</label> ' +
           '<div class="col-md-8"> ' +
           '<input type="file" name="pdf" class="form-control input-md"> ' +
           '</div> ' +

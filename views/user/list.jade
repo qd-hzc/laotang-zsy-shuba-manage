@@ -104,13 +104,14 @@ block content
     $('.date').datepicker();
     var _postData = {};
     /*`id`, `username`, `password`, `company`, `department`, `name`, `phone`, `status`, `cdate`, `udate`*/
-    var _colNames = ['登陆名', '手机号', '状态', '创建日期', '修改日期', '真实姓名', '公司', '部门', '操作'];
+    var _colNames = ['登陆名', '创建日期', '修改日期', '状态', '真实姓名', '手机号', '公司', '部门', '操作'];
     var _colModel = [
       {name: 'username', width: 80, index: 'username', align: "left", sortable: true},
-      {name: 'phone', width: 100, index: 'phone', align: "left", sortable: true},
       //        formatter: function (cellvalue, options, rowObject) {
+      {name: 'cdate', width: 120, index: 'cdate', align: "left", sortable: true, formatter: FORMAT.timeYMDHMS},
+      {name: 'udate', width: 120, index: 'udate', align: "left", sortable: true, formatter: FORMAT.timeYMDHMS},
       {
-        name: 'status', width: 120, index: 'status', align: "left", sortable: true,
+        name: 'status', width: 80, index: 'status', align: "left", sortable: true,
         formatter: function (status) {
           //0：失效，１：注册中，２：审批拒绝，３：有效
           if (status == 0) return "无效用户";
@@ -119,13 +120,12 @@ block content
           if (status == 3) return "有效用户";
         }
       },
-      {name: 'cdate', width: 100, index: 'cdate', align: "left", sortable: true, formatter: FORMAT.timeYMD},
-      {name: 'udate', width: 100, index: 'udate', align: "left", sortable: true, formatter: FORMAT.timeYMD},
       {name: 'name', width: 80, index: 'name', align: "left", sortable: true},
-      {name: 'company', width: 150, index: 'company', align: "left", sortable: true},
-      {name: 'department', width: 150, index: 'department', align: "left", sortable: true},
+      {name: 'phone', width: 100, index: 'phone', align: "left", sortable: true},
+      {name: 'company', width: 120, index: 'company', align: "left", sortable: true},
+      {name: 'department', width: 120, index: 'department', align: "left", sortable: true},
       {
-        name: '操作', width: 200, index: '', sortable: false,
+        name: '操作', width: 150, index: '', sortable: false,
         formatter: function (value, options, row) {
           var userId = row.id;
           var unused = '<a onclick="updateUserStatus(this,' + userId + ',0);">使之失效</a>';

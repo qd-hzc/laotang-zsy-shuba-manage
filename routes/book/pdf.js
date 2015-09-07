@@ -10,6 +10,7 @@ var http = require('http');
 var request = require('request-json');
 var multer = require('multer');
 var db = require('../../config/db');
+var utils = require('../../lib/utils.js');
 
 var pdfService = require('../../service/book/pdf');
 var categoryService = require('../../service/book/category');
@@ -95,17 +96,23 @@ router.post('/update',
             desc: params.desc,
             status: params.status
         };
+
+        //验证
+        if (!newObj.name || newObj.name.length < 5 || newObj.name.length > 20)
+            return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在5到20之间")');
+        if (!newObj.desc|| newObj.desc.length < 10 || newObj.desc.length > 100)
+            return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在10到100之间")');
+
         var files = req.files;
         if (files['pdf'] && files['pdf'][0])newObj.pdf = files['pdf'][0];
         if (files['img'] && files['img'][0])newObj.img = files['img'][0];
 
         res.set('Content-Type', 'text/html');
         pdfService.update(newObj, function (err) {
-            res.write('<script>parent.callback(' + params.id + ',' + !err + ')</script>');
-            res.end();
+            utils.jsonpAndEnd(res, 'parent.callback(' + params.id + ',' + !err + ')');
         }, function (ret) {
             var progress = Math.round((ret.current * 100.0) / ret.total) + "%";
-            res.write('<script>parent.updateProgress("' + progress + '")</script>');
+            utils.jsonp(res, 'parent.updateProgress("' + progress + '")');
         });
 
     });
@@ -125,20 +132,25 @@ router.post('/add',
             desc: params.desc,
             status: params.status
         };
+
+        //验证
+        if (!newObj.name || newObj.name.length < 5 || newObj.name.length > 20)
+            return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在5到20之间")');
+        if (!newObj.desc|| newObj.desc.length < 10 || newObj.desc.length > 100)
+            return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在10到100之间")');
+
         var files = req.files;
         if (files['pdf'] && files['pdf'][0])newObj.pdf = files['pdf'][0];
         if (files['img'] && files['img'][0])newObj.img = files['img'][0];
 
         res.set('Content-Type', 'text/html');
         pdfService.add(newObj, function (err) {
-            res.write('<script>parent.addCallback(' + !err + ')</script>');
-            res.end();
+            utils.jsonpAndEnd(res, 'parent.addCallback(' + !err + ')');
         }, function (ret) {
             var progress = Math.round((ret.current * 100.0) / ret.total) + "%";
-            res.write('<script>parent.addProgress("' + progress + '")</script>');
+            utils.jsonp(res, 'parent.addProgress("' + progress + '")');
         }, function (fieldName, message) {
-            res.write('<script>parent.addValidator("' + fieldName + '","' + message + '")</script>');
-            res.end();
+            utils.jsonpAndEnd(res, 'parent.addValidator("' + fieldName + '","' + message + '")');
         });
 
     });
