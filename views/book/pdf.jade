@@ -89,14 +89,13 @@ block content
             | 人
             button.close(data-dismiss='alert', style='display: none;')
               i.icon-remove
-          button#btn-add-pdf-id.btn.btn-info.btn-sm(onclick="addPdf(this)")
+          button#btn-add-pdf-id.btn.btn-info.btn-sm(onclick="addPdf(this)",style="margin-bottom:5px;width:180px;")
             i.icon-plus.bigger-110
             |                                     新建图书
           table#grid-table
           #grid-pager
           script(type='text/javascript').
             var $path_base = "/";//this will be used in gritter alerts containing images
-          #container(style='min-width:700px;height:400px')
           // PAGE CONTENT ENDS
         // /.col
       // /.row

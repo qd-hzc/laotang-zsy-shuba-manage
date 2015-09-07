@@ -33,12 +33,21 @@ html(lang='en')
         background: lightgray;
       }
 
-      .breadcrumbs, #sidebar-collapse, .alert {
+      .breadcrumbs, #sidebar-collapse, .alert, .page-header {
         display: none;
       }
 
       .date, .btn, input {
         height: 33px;
+      }
+
+      .btn{
+        font-size: 15px;
+      }
+
+      .menu-text{
+        font-size: 18px;
+        margin-left: 10px;
       }
 
       .searchTable {
@@ -230,8 +239,6 @@ html(lang='en')
         block content
 
       // /.main-container-inner
-      a#btn-scroll-up.btn-scroll-up.btn.btn-sm.btn-inverse(href='#')
-        i.icon-double-angle-up.icon-only.bigger-110
     // /.main-container
     //input#fileupload(type="file",name="files[]",data-url="/upload" multiple)
     script(type='text/javascript').
