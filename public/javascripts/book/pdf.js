@@ -114,14 +114,23 @@ function updatePdfStatus(owner, id, status) {
  * 更新pdf图书的状态
  */
 function deletePdf(owner, id) {
-    $.post('book/pdf/delete', {id: id}, function (result) {
-        var msg = '删除失败', color = 'red';
-        if (result && result.status) msg = '删除成功', color = 'green';
-        $(owner).parent().empty().append('<span style="color:' + color + ';">' + msg + '<span>');
-        setTimeout(function () {
-            jQuery(grid_selector).trigger('reloadGrid');
-        }, 1000);
+    bootbox.confirm("您确定要删除吗?", function (result1) {
+        if(result1) {
+            bootbox.confirm("删除不可恢复,请再次确认", function (result2) {
+                if(result2) {
+                    $.post('book/pdf/delete', {id: id}, function (result) {
+                        var msg = '删除失败', color = 'red';
+                        if (result && result.status) msg = '删除成功', color = 'green';
+                        $(owner).parent().empty().append('<span style="color:' + color + ';">' + msg + '<span>');
+                        setTimeout(function () {
+                            jQuery(grid_selector).trigger('reloadGrid');
+                        }, 1000);
+                    });
+                }
+            });
+        }
     });
+
 }
 
 /**

@@ -140,8 +140,12 @@ router.post('/add',
             return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在10到100之间")');
 
         var files = req.files;
-        if (files['pdf'] && files['pdf'][0])newObj.pdf = files['pdf'][0];
+
         if (files['img'] && files['img'][0])newObj.img = files['img'][0];
+        else return utils.jsonpAndEnd(res, 'parent.validate("img","必须上传封面图片")');
+
+        if (files['pdf'] && files['pdf'][0])newObj.pdf = files['pdf'][0];
+        else return utils.jsonpAndEnd(res, 'parent.validate("pdf","必须上传PDF文件")');
 
         res.set('Content-Type', 'text/html');
         pdfService.add(newObj, function (err) {

@@ -12,7 +12,7 @@ module.exports = function (helperUrl, rpcClientClassName, remoteObj) {
 
     rpcRouter.get(helperUrl, function (req, res) {
 
-        var port = (process.env.PORT || '3000');
+        var port = (process.env.PORT || '3333');
 
         var data = {
             RPCClientClassName: rpcClientClassName,
