@@ -6,6 +6,18 @@ var db = require('../../config/db');
 var fs = require('fs');
 var dateFormat = require('date-format');
 var PDF = require('../../lib/pdf');
+var pinyin = require("pinyin");
+
+
+/**
+ * 返回中文的拼音
+ * @param text
+ */
+function getPinYin(text){
+    return pinyin(text, {
+        style: pinyin.STYLE_NORMAL
+    });
+}
 
 /**
  *  pdf列表查询，带有分页
@@ -40,7 +52,7 @@ function updateStatus(id, status, callback) {
  * @param id
  * @param callback
  */
-function deletePdf(id,callback){
+function deletePdf(id, callback) {
     db.pool.query('DELETE FROM dic_pdf WHERE id = ?', [id], callback);
 }
 
@@ -82,6 +94,7 @@ function _movePdfFile(newObj, oldObj, callback, progressCallback) {
         fs.renameSync(pdf.path, newPdfPath);
 
         var fileName = pdf.originalname.substring(0, pdf.originalname.lastIndexOf('.'));
+        fileName = getPinYin(fileName);
         var htmlFolder = pdf.destination + id + fileName;
 
         var folder = htmlFolder;
@@ -180,7 +193,7 @@ function addPdf(newObj, cb, progressCallback, errorCallback) {
 
     var udate = dateFormat.asString('yyy-MM-dd HH:mm:ss', new Date());
     var sql = 'INSERT INTO dic_pdf SET name = ?, dic_category_id = ?, `desc` = ?, status = ?, udate = ?, cdate=?';
-    db.pool.query(sql, [name, categoryId, desc, status, udate,udate], insertCallback);
+    db.pool.query(sql, [name, categoryId, desc, status, udate, udate], insertCallback);
 
     /**
      * 插入之后保存pdf
@@ -208,6 +221,7 @@ function addPdf(newObj, cb, progressCallback, errorCallback) {
 
             // pdf 生成 html的目标文件夹的处理
             var fileName = pdf.originalname.substring(0, pdf.originalname.lastIndexOf('.'));
+            fileName = getPinYin(fileName);
             var htmlFolder = pdf.destination + id + fileName;
             fs.mkdirSync(htmlFolder);
 
@@ -246,5 +260,5 @@ module.exports = {
     update: isPdfFileExist,
     add: addPdf,
     loadPdf: loadPdf,
-    deletePdf:deletePdf
+    deletePdf: deletePdf
 };
