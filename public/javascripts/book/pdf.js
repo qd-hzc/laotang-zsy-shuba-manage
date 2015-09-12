@@ -23,7 +23,7 @@ var _colModel = [
         formatter: function (value, options, row) {
             try {
                 if (value) {
-                    var label = value.substring(value.lastIndexOf('/') + 1).substring(('' + row.id).toString().length);
+                    var label = value.substring(value.lastIndexOf('/') + 1).substring(('' + row.id).toString().length+1);
                     return '<a href="' + value + '" target="_blank">' + label + '</a>';
                 }
                 return value;
@@ -37,7 +37,7 @@ var _colModel = [
         formatter: function (value, options, row) {
             try {
                 if (value) {
-                    var label = value.substring(value.lastIndexOf('/') + 1).substring(('' + row.id).toString().length);
+                    var label = value.substring(value.lastIndexOf('/') + 1).substring(('' + row.id).toString().length + 1);
                     return '<a href="' + value + '" target="_blank">' + label + '</a>';
                 }
                 return value;
@@ -115,9 +115,9 @@ function updatePdfStatus(owner, id, status) {
  */
 function deletePdf(owner, id) {
     bootbox.confirm("您确定要删除吗?", function (result1) {
-        if(result1) {
+        if (result1) {
             bootbox.confirm("删除不可恢复,请再次确认", function (result2) {
-                if(result2) {
+                if (result2) {
                     $.post('book/pdf/delete', {id: id}, function (result) {
                         var msg = '删除失败', color = 'red';
                         if (result && result.status) msg = '删除成功', color = 'green';
@@ -142,8 +142,12 @@ function updatePdf(owner, id) {
      * 获取预览图片或者pdf的链接
      */
     function genPreviewLink(value, id) {
-        var label = value.substring(value.lastIndexOf('/') + 1).substring(('' + id).toString().length);
-        return '<a href="' + value + '" target="_blank">' + label + '</a>';
+        try {
+            var label = value.substring(value.lastIndexOf('/') + 1).substring(('' + id).toString().length);
+            return '<a href="' + value + '" target="_blank">' + label + '</a>';
+        } catch (e) {
+            return '';
+        }
     }
 
     var preUrl = 'book/pdf/update/pre'; // 加载要更新的表单数据
@@ -267,7 +271,7 @@ function callback(id, status) {
     setTimeout(function () {
         window.__myDialog.modal('hide');
         jQuery(grid_selector).trigger('reloadGrid');
-    }, 2000);
+    }, 1500);
 }
 
 /**
@@ -375,7 +379,7 @@ function addCallback(status) {
     setTimeout(function () {
         window.__myDialog.modal('hide');
         jQuery(grid_selector).trigger('reloadGrid');
-    }, 2000);
+    }, 1500);
 }
 
 

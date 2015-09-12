@@ -71,6 +71,8 @@ function _movePdfFile(newObj, oldObj, callback, progressCallback) {
     if (typeof img === 'object') {
         newImgPath = img.destination + /*(new Date().getTime())*/ id + img.originalname;
         fs.renameSync(img.path, newImgPath);
+    } else {
+        newImgPath = 'public/' + img;
     }
 
     var _cantContinue = false;
@@ -190,7 +192,7 @@ function addPdf(newObj, cb, progressCallback, errorCallback) {
      * @param result
      */
     function insertCallback(err, result) {
-        var id = result.insertId;
+        var id = result.insertId + '-';
 
         // 如果上传了img,则先重命名
         var newImgPath = img;
