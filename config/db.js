@@ -26,9 +26,11 @@ exports.createDb = function () {
             var config = {
                 host: process.env.MYSQL_IP || 'localhost',
                 user: process.env.MYSQL_USERNAME || 'root',
-                password: process.env.MYSQL_PASSWORD || 'ybkk1027'
+                password: process.env.MYSQL_PASSWORD || '123456'
             };
-            if (index > 0) config.database = process.env.MYSQL_SCHEMA || 'zsy_sb';
+            if (index == 0) {
+                sql = sql.replace('#SCHAME#',process.env.MYSQL_SCHEMA);
+            } else config.database = process.env.MYSQL_SCHEMA || 'zsy_sb';
             var connection = mysql.createConnection(config);
             connection.query(sql, function (err, rows) {
                 //console.log(sql);

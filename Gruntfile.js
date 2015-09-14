@@ -99,8 +99,8 @@ module.exports = function (grunt) {
             },
             my_main: {
                 flatten: true,
-                src: 'index.js',
-                dest: '../dest/zsysb/index.js'
+                src: 'zsysb.js',
+                dest: '../dest/zsysb/zsysb.js'
             }
         }
     });
