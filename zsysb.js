@@ -30,8 +30,7 @@ if (argv.h || argv.help) {
         "  -u                 MYSQL_USERNAME, default root",
         "  -w                 MYSQL_PASSWORD, default 123456",
         "  -m                 MYSQL_SCHEMA, default zsy_sb",
-        "  -k                 Start web application",
-        "  -g                 Stop web application",
+        "  -g --kill          Stop web application",
         "  -h --help          Print this list and exit.",
         "  -v --version       Print the version and author"
     ].join('\n'));
@@ -45,7 +44,7 @@ if (argv.v || argv.version) {
 }
 
 // 停止服务
-if (argv.g) {
+if (argv.g || argv.kill) {
     var pid = fs.readFileSync(__dirname + '/PROCESS_ID', 'UTF-8');
     try {
         process.kill(pid, 'SIGHUP');
@@ -80,11 +79,6 @@ process.env.MYSQL_SCHEMA = argv.m || process.env.MYSQL_SCHEMA || 'test';
  */
 var port = normalizePort(process.env.ZSYSB_PORT);
 app.set('port', port);
-//portfinder.basePort = normalizePort(process.env.ZSYSB_PORT);
-//portfinder.getPort(function (err, p) {
-//    if (err) throw err;
-//    port = p;
-//});
 
 var master = cluster(function (worker) {
     /**

@@ -27,17 +27,15 @@ ZSYSB_PORT(web应用端口)
 
 
 命令行启动方式:
-"usage: nohup zsysb [options]",
-"",
-"options:",
-"  -p                 ZSYSB_PORT(web), default 3333",
-"  -t                 MYSQL_PORT(db), default 3306",
-"  -a                 MYSQL_IP,default 127.0.0.1",
-"  -c                 MYSQL_CONNECTION_LIMIT, default 50",
-"  -u                 MYSQL_USERNAME, default root",
-"  -w                 MYSQL_PASSWORD, default 123456",
-"  -m                 MYSQL_SCHEMA, default zsy_sb",
-"  -k                 Start web application",
-"  -g                 Stop web application",
-"  -h --help          Print this list and exit.",
-"  -v --version       Print the version and author"
+usage: nohup zsysb [options]
+options:
+  -p                 ZSYSB_PORT(web), default 3333
+  -t                 MYSQL_PORT(db), default 3306
+  -a                 MYSQL_IP,default 127.0.0.1
+  -c                 MYSQL_CONNECTION_LIMIT, default 50
+  -u                 MYSQL_USERNAME, default root
+  -w                 MYSQL_PASSWORD, default 123456
+  -m                 MYSQL_SCHEMA, default zsy_sb
+  -g --kill          Stop web application
+  -h --help          Print this list and exit.
+  -v --version       Print the version and author
