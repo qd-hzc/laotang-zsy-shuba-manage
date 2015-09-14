@@ -146,7 +146,7 @@ FORMAT.xingming = function () {
 FORMAT.baiFen = function () {
     var value = arguments[0];
     if (value) {//Math.round(num*100)/100
-        return Math.round(value * 10000)/100 + '%';
+        return Math.round(value * 10000) / 100 + '%';
     } else {
         return "0%";
     }
@@ -169,20 +169,20 @@ FORMAT.xsks = function () {
     var value = arguments[0];
     var row = arguments[2];
     if (value) {
-        if(row.learnType == '线上'){
+        if (row.learnType == '线上') {
             var t;
-            if(value > -1){
-                hour = Math.floor(value/3600);
-                min = Math.floor(value/60) % 60;
-                sec = value % 60;
-                day = parseInt(hour / 24);
+            if (value > -1) {
+                var hour = Math.floor(value / 3600);
+                var min = Math.floor(value / 60) % 60;
+                var sec = value % 60;
+                var day = parseInt(hour / 24);
                 if (day > 0) {
                     hour = hour - 24 * day;
                     t = day + "天 " + hour + "小时";
-                } else if (hour>0){
+                } else if (hour > 0) {
                     t = hour + "小时";
-                }else {
-                    t='';
+                } else {
+                    t = '';
                 }
                 //if(min < 10){t += "0";}
                 t += min + "分钟";
@@ -190,7 +190,7 @@ FORMAT.xsks = function () {
                 //t += sec;
             }
             return t;
-        }else{
+        } else {
             return value + '小时';
         }
     } else {
@@ -281,7 +281,7 @@ FORMAT.qi = function () {
  */
 FORMAT.IsLate = function () {
     var value = arguments[0];
-    if (value==1) {
+    if (value == 1) {
         return '<span class="label label-danger">迟到</span>';
     } else {
         return '<span class="label label-success">正常</span>';
@@ -292,42 +292,42 @@ FORMAT.IsLate = function () {
  */
 FORMAT.IsLeaveEarly = function () {
     var value = arguments[0];
-    if (value==1) {
+    if (value == 1) {
         return '<span class="label label-warning">早退</span>';
     } else {
         return '<span class="label label-success">正常</span>';
     }
 };
 FORMAT.IsLeaveEarlyState = function (x, c, rowObject) {//CheckInTime
-    var IsLeaveEarly = rowObject.IsLeaveEarly,CheckInTime=rowObject.CheckInTime,CheckOutTime=rowObject.CheckOutTime;
-    if(CheckOutTime){
+    var IsLeaveEarly = rowObject.IsLeaveEarly, CheckInTime = rowObject.CheckInTime, CheckOutTime = rowObject.CheckOutTime;
+    if (CheckOutTime) {
         if (IsLeaveEarly == 1) {
             return '<span class="label label-warning">早退</span>';
         }
-        else if(IsLeaveEarly == 0){
+        else if (IsLeaveEarly == 0) {
             return '<span class="label label-primary">正常</span>';
         }
-    }else {
-        if(CheckInTime){
+    } else {
+        if (CheckInTime) {
             return '<span class="label label-grey">未打卡</span>';
-        }else{
+        } else {
             return '<span class="label label-success">缺勤</span>';
         }
     }
 };
 FORMAT.IsLateState = function (x, c, rowObject) {//CheckInTime
-    var IsLater = rowObject.IsLate,CheckInTime=rowObject.CheckInTime,CheckOutTime=rowObject.CheckOutTime;
-    if(CheckInTime){
+    var IsLater = rowObject.IsLate, CheckInTime = rowObject.CheckInTime, CheckOutTime = rowObject.CheckOutTime;
+    if (CheckInTime) {
         if (IsLater == 1) {
             return '<span class="label label-danger">迟到</span>';
         }
-        else if(IsLater == 0){
+        else if (IsLater == 0) {
             return '<span class="label label-primary">正常</span>';
         }
-    }else {
-        if(CheckOutTime){
+    } else {
+        if (CheckOutTime) {
             return '<span class="label label-grey">未打卡</span>';
-        }else{
+        } else {
             return '<span class="label label-success">缺勤</span>';
         }
     }
@@ -343,9 +343,9 @@ FORMAT.isChiDao = function () {
     //}
     if (parseInt(v) == 1) {
         return '<span class="label label-danger">迟到</span>';
-    } else if(parseInt(v) == 3){
+    } else if (parseInt(v) == 3) {
         return '<span class="label label-grey">未打卡</span>';
-    } else{
+    } else {
         return '';
     }
 };
@@ -358,7 +358,7 @@ FORMAT.isZaoTui = function () {
     var v = arguments[0];
     if (parseInt(v) == 1) {
         return '<span class="label label-warning">早退</span>';
-    }else if(parseInt(v) == 3){
+    } else if (parseInt(v) == 3) {
         return '<span class="label label-grey">未打卡</span>';
     }
     return '';
@@ -366,17 +366,17 @@ FORMAT.isZaoTui = function () {
 };
 FORMAT.isQueQin = function () {
     /*var row = arguments[2];
-    var checkInTime = row.CheckInTime;
-    var checkOutTime = row.CheckOutTime;
-    console.log(checkInTime,checkOutTime);
-    if (checkInTime ||  checkOutTime) {
-        return '';
-    }
-    return '缺勤';*/
+     var checkInTime = row.CheckInTime;
+     var checkOutTime = row.CheckOutTime;
+     console.log(checkInTime,checkOutTime);
+     if (checkInTime ||  checkOutTime) {
+     return '';
+     }
+     return '缺勤';*/
     var v = arguments[0];
     if (parseInt(v) == 1) {
         return '<span class="label label-success">缺勤</span>';
-    }else if(parseInt(v) == 3){
+    } else if (parseInt(v) == 3) {
         return '<span class="label label-grey">未打卡</span>';
     }
     return '';

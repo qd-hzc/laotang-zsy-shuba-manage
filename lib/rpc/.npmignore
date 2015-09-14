@@ -1,0 +1,7 @@
+.idea/
+node_modules/
+test/node_modules/
+test/node.exe
+test/node_mon.js
+test/run.cmd
+
