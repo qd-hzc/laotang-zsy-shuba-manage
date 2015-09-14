@@ -5,11 +5,15 @@
 
 2:配置如下环境变量:
 
-    MYSQL_CONNECTION_LIMIT(连接池大小)
+    MYSQL_CONNECTION_LIMIT(连接池大小,整数值)
     
-    MYSQL_IPMYSQL_USERNAME
+    MYSQL_IP(数据库所在服务器的ip)
     
-    MYSQL_PASSWORDMYSQL_SCHEMA(库名)
+    MYSQL_USERNAME(必须是root账户)
+    
+    MYSQL_PASSWORD(root账号密码)
+    
+    MYSQL_SCHEMA(库名,随便起名,不用提前建好数据库)
     
     ZSYSB_PORT(web应用端口)
     
@@ -19,4 +23,4 @@
 
 5:直接运行如下命令启动 nohup zsysb & 
 
-6:浏览器地址栏输入 http://server ip:ZSYSB_PORT",
+6:浏览器地址栏输入 http://server ip:ZSYSB_PORT"

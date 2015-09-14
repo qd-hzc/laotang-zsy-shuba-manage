@@ -1,11 +1,11 @@
 {
   "name": "zsysb",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "中石油书吧APP管理后台",
   "author": {
     "name": "尹彬"
   },
-  "readme": "\n\n\n\n运行步骤:\n\n\n1:服务器上运行 npm  install  zsysb  -g \n\n2:在服务器安装配置pdf2htmlEX(请百度)\n\n3:先配置如下环境变量:\nMYSQL_CONNECTION_LIMIT(连接池大小)\nMYSQL_IP\nMYSQL_USERNAME\nMYSQL_PASSWORD\nMYSQL_SCHEMA(库名)\nZSYSB_PORT(web应用端口)\n\n4:直接运行 nohup zsysb & 在命令行\n\n5:浏览器地址栏输入 http://ip:ZSYSB_PORT\n\n",
+  "readme": "\n运行步骤:\n\n 1:安装mysql数据库\n\n 2:配置如下环境变量:\n MYSQL_CONNECTION_LIMIT(连接池大小,整数值)\n MYSQL_IP(数据库服务器的ip地址)\n MYSQL_USERNAME(必须是root账户)\n MYSQL_PASSWORD(root账号密码)\nMYSQL_SCHEMA(库名,随便起名,不用提前建好数据库)\n ZSYSB_PORT(web应用端口)\n 3:在服务器安装配置pdf2htmlEX,具体安装过程请百度\n\n 4:服务安装 npm  install  zsysb  -g\n\n 5:直接运行如下命令启动 nohup zsysb &\n\n 6:浏览器地址栏输入 http://server ip:ZSYSB_PORT\n\n",
   "private": false,
   "scripts": {
     "start": "node ./index.js"

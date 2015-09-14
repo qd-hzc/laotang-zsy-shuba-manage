@@ -3,7 +3,6 @@
 /**
  * Module dependencies.
  */
-
 var app = require('./app.js');
 var debug = require('debug')('zsysb:server');
 var http = require('http');
@@ -40,7 +39,7 @@ cluster(function (worker) {
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
-});
+}, numCPUs);
 
 /**
  * Normalize a port into a number, string, or false.
