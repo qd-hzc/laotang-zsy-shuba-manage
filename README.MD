@@ -1,3 +1,10 @@
+zsysb
+========
+
+
+中石油书吧APP管理后台
+
+
 
 运行步骤:
 
@@ -24,3 +31,4 @@
 5:直接运行如下命令启动 nohup zsysb & 
 
 6:浏览器地址栏输入 http://server ip:ZSYSB_PORT"
+
