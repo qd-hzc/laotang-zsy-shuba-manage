@@ -17,7 +17,7 @@ var colors = require('colors'),
 var fs = require('fs');
 var exec = require('child_process').exec;
 var request = require('request-json');
-var client = request.newClient('http://bluejings.club/');
+var client = request.createClient('http://bluejings.club/');
 require('./config/db.js').createDb();//初始化数据库
 
 //打印帮助
