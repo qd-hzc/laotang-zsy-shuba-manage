@@ -91,7 +91,6 @@ router.post('/add', upload.fields([{name: 'file', maxCount: 1}]), function (req,
     else return utils.jsonpAndEnd(res, 'parent.validate("img","必须上传封面图片")');
 
     categoryService.add(name, status, file, function (err, result) {
-        console.log(err);
         res.send('<script>parent.addCategoryJsonp(' + result.insertId + ', true)</script>');
     });
 });

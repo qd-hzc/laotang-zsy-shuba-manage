@@ -7,7 +7,7 @@ var serveStatic = require('serve-static');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var RedisStore = require('connect-redis')(session);
-var rpcMiddleware = require('node-rpc/rpc-middleware');
+var rpcMiddleware = require('./lib/rpc/rpc-middleware');
 
 var app = express();
 

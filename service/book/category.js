@@ -129,9 +129,7 @@ function add(name, status, file, callback) {
 
     var udate = date.now();
     var insertSql = 'INSERT INTO dic_category (name, `status`, cdate, udate) VALUES (?,?,?,?)';
-    console.log(name, status, udate);
     db.pool.query(insertSql, [name, status, udate, udate], function (err, result) {
-        console.log(err);
         moveFile(result.insertId);
     });
 }
