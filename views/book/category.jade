@@ -3,11 +3,7 @@
 extends ../layout
 
 block content
-  style.
-    .bootbox-body {
-      height: 100px !important;
-      overflow: hidden !important;
-    }
+
   .main-content
     #breadcrumbs.breadcrumbs
       script(type='text/javascript').
@@ -75,6 +71,9 @@ block content
             | 人
             button.close(data-dismiss='alert', style='display: none;')
               i.icon-remove
+          button#btn-add-category-id.btn.btn-info.btn-sm(onclick="addCategory(this)",style="margin-bottom:5px;width:180px;")
+            i.icon-plus.bigger-110
+            |                                     新建分类
           table#grid-table
           #grid-pager
           script(type='text/javascript').
@@ -85,9 +84,6 @@ block content
     // /.page-content
   // /.main-content
   style.
-    .modal-body > div {
-      height: 500px;
-      overflow: scroll;
-    }
+
   script(type='text/javascript',src="javascripts/book/category.js")
   script(type="text/javascript") categoryPageInit();

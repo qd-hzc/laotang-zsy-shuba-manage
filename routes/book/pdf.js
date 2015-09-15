@@ -120,7 +120,6 @@ router.post('/update',
 /**
  * 添加上传pdf
  */
-var add = multer({dest: 'public/files/pdf/'});
 router.post('/add',
     upload.fields([{name: 'pdf', maxCount: 1}, {name: 'img', maxCount: 1}]),
     function (req, res, next) {
