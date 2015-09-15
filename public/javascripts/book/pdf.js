@@ -30,7 +30,7 @@
                         }
                         return value;
                     } catch (e) {
-                        return value;
+                        return '';
                     }
                 }
             },
@@ -44,7 +44,7 @@
                         }
                         return value;
                     } catch (e) {
-                        return value;
+                        return '';
                     }
                 }
             },
