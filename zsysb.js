@@ -60,8 +60,8 @@ process.env.MYSQL_PORT = argv.t || process.env.MYSQL_PORT || '3306';
 process.env.MYSQL_IP = argv.a || process.env.MYSQL_IP || '0.0.0.0';
 process.env.MYSQL_CONNECTION_LIMIT = argv.c || process.env.MYSQL_CONNECTION_LIMIT || '50';
 process.env.MYSQL_USERNAME = argv.u || process.env.MYSQL_USERNAME || 'root';
-process.env.MYSQL_PASSWORD = argv.w || process.env.MYSQL_PASSWORD || '123456';
-process.env.MYSQL_SCHEMA = argv.m || process.env.MYSQL_SCHEMA || 'test';
+process.env.MYSQL_PASSWORD = argv.w || process.env.MYSQL_PASSWORD || 'ybkk1027';
+process.env.MYSQL_SCHEMA = argv.m || process.env.MYSQL_SCHEMA || 'zsy_sb';
 
 /*
  //调试命令行参数

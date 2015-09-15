@@ -26,7 +26,7 @@ exports.createDb = function () {
             var config = {
                 host: process.env.MYSQL_IP || 'localhost',
                 user: process.env.MYSQL_USERNAME || 'root',
-                password: process.env.MYSQL_PASSWORD || '123456'
+                password: process.env.MYSQL_PASSWORD || 'ybkk1027'
             };
             if (index == 0) {
                 sql = sql.replace('#SCHAME#',process.env.MYSQL_SCHEMA);

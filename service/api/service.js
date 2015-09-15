@@ -101,3 +101,13 @@ module.exports.searchPdf = function (searchText, callback) {
     callbackForList.callback = callback;
     db.pool.query(selectSql, ['%' + searchText + '%', '%' + searchText + '%'], callbackForList);
 };
+
+
+/**
+ * 返回分类列表
+ */
+module.exports.listCategory = function (callback) {
+    var selectSql = 'SELECT * FROM dic_category status = 1';
+    callbackForList.callback = callback;
+    db.pool.query(selectSql, callbackForList);
+};
