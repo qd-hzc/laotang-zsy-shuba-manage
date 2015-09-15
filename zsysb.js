@@ -15,6 +15,7 @@ var colors = require('colors'),
         .boolean('cors')
         .argv;
 var fs = require('fs');
+var exec = require('child_process').exec;
 require('./config/db.js').createDb();//初始化数据库
 
 //打印帮助
@@ -47,8 +48,21 @@ if (argv.v || argv.version) {
 if (argv.g || argv.kill) {
     var pid = fs.readFileSync(__dirname + '/PROCESS_ID', 'UTF-8');
     try {
-        process.kill(pid, 'SIGHUP');
+        //process.kill(pid, 'SIGHUP');
+        //默认无参数,直接显示usecase
+        //-v:显示作者和版本
+        //start: 继续执行
+        //stop: kill -9 $(ps -ef|grep zsysb|gawk '$0 !~/grep/ {print $2}' |tr -s '\n' ' ')
+        //restart: nohup zsysb &
         console.log('<中石油书吧APP管理系统>服务集群已停止运行,主进程id是:' + pid);
+        var cmdStr = "kill -9 $(ps -ef|grep zsysb|gawk '$0 !~/grep/ {print $2}' |tr -s '\n' ' ')";
+        exec(cmdStr, function (err, stdout, stderr) {
+            if (err) {
+                console.log('get weather api error:' + stderr);
+            } else {
+                console.log(stdout);
+            }
+        });
     } catch (e) {
         console.log('<中石油书吧APP管理系统>服务集群还没启动,不需要停止');
     }
