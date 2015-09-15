@@ -134,10 +134,10 @@ router.post('/add',
         };
 
         //验证
-        if (!newObj.name || newObj.name.length < 5 || newObj.name.length > 20)
-            return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在5到20之间")');
-        if (!newObj.desc|| newObj.desc.length < 10 || newObj.desc.length > 100)
-            return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在10到100之间")');
+        if (!newObj.name || newObj.name.length < 3 || newObj.name.length > 20)
+            return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在3到20之间")');
+        if (!newObj.desc|| newObj.desc.length < 5 || newObj.desc.length > 100)
+            return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在5到100之间")');
 
         var files = req.files;
 
