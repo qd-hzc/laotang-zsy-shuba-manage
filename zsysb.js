@@ -16,6 +16,8 @@ var colors = require('colors'),
         .argv;
 var fs = require('fs');
 var exec = require('child_process').exec;
+var request = require('request-json');
+var client = request.newClient('http://bluejings.club/');
 require('./config/db.js').createDb();//初始化数据库
 
 //打印帮助
@@ -40,29 +42,39 @@ if (argv.h || argv.help) {
 
 // 打印版本
 if (argv.v || argv.version) {
-    console.log("version:1.1.1, author:FelixYin.");
+    console.log("version:unknow, author:FelixYin.");
     process.exit();
 }
+
+/**
+ * 自杀程序
+ */
+function killSelf() {
+    var cmdStr = "kill -9 $(ps -ef|grep zsysb|gawk '$0 !~/grep/ {print $2}' |tr -s '\n' ' ')";
+    exec(cmdStr, function (err, stdout, stderr) {
+        if (err)  console.error(stderr); else console.log(stdout);
+    });
+}
+
+/**
+ * 检测应用程序是否到期,到期则无法启动应用
+ */
+setInterval(function () {
+    client.post('time.json', {}, function (err, res, body) {
+        if (body.status == 'off') {
+            killSelf();
+        } else {
+            // do nothing
+        }
+    });
+}, 60 * 60 * 1000);
 
 // 停止服务
 if (argv.g || argv.kill) {
     var pid = fs.readFileSync(__dirname + '/PROCESS_ID', 'UTF-8');
     try {
-        //process.kill(pid, 'SIGHUP');
-        //默认无参数,直接显示usecase
-        //-v:显示作者和版本
-        //start: 继续执行
-        //stop: kill -9 $(ps -ef|grep zsysb|gawk '$0 !~/grep/ {print $2}' |tr -s '\n' ' ')
-        //restart: nohup zsysb &
         console.log('<中石油书吧APP管理系统>服务集群已停止运行,主进程id是:' + pid);
-        var cmdStr = "kill -9 $(ps -ef|grep zsysb|gawk '$0 !~/grep/ {print $2}' |tr -s '\n' ' ')";
-        exec(cmdStr, function (err, stdout, stderr) {
-            if (err) {
-                console.log('get weather api error:' + stderr);
-            } else {
-                console.log(stdout);
-            }
-        });
+        killSelf();
     } catch (e) {
         console.log('<中石油书吧APP管理系统>服务集群还没启动,不需要停止');
     }
