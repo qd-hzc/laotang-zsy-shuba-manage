@@ -28,7 +28,7 @@
                             var label = value.substring(value.lastIndexOf('/') + 1).substring(('' + row.id).toString().length + 1);
                             return '<a href="' + value + '" target="_blank">' + label + '</a>';
                         }
-                        return value;
+                        return value || '';
                     } catch (e) {
                         return '';
                     }
@@ -42,7 +42,7 @@
                             var label = value.substring(value.lastIndexOf('/') + 1).substring(('' + row.id).toString().length + 1);
                             return '<a href="' + value + '" target="_blank">' + label + '</a>';
                         }
-                        return value;
+                        return value || '';
                     } catch (e) {
                         return '';
                     }
