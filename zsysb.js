@@ -36,10 +36,8 @@ setInterval(function () {
 if (argv.h || argv.help) {
     console.log([
         "usage: nohup zsysb [options]",
-        "usage: nohup zsysb -u root -w hzc2015 -m mydb -s 1 -p 80 -t 3306 -a localhost",
         "",
         "options:",
-        "  -s                 是否是生产模式(即非开发模式),1是,0不是,默认为0",
         "  -p                 ZSYSB_PORT(web), default 3333",
         "  -t                 MYSQL_PORT(db), default 3306",
         "  -a                 MYSQL_IP,default 127.0.0.1",
@@ -91,11 +89,6 @@ process.env.MYSQL_CONNECTION_LIMIT = argv.c || process.env.MYSQL_CONNECTION_LIMI
 process.env.MYSQL_USERNAME = argv.u || process.env.MYSQL_USERNAME || 'root';
 process.env.MYSQL_PASSWORD = argv.w || process.env.MYSQL_PASSWORD || 'ybkk1027';
 process.env.MYSQL_SCHEMA = argv.m || process.env.MYSQL_SCHEMA || 'zsy_sb';
-if (argv.s && parseInt(argv.s) == 1) {
-    process.env.FILE_FOLDER = argv.m || process.env.FILE_FOLDER || '/usr/local/lib/node_modules/zsysb/';
-} else {
-    process.env.FILE_FOLDER = '';
-}
 
 /*
  //调试命令行参数

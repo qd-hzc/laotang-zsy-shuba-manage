@@ -83,7 +83,7 @@ router.post('/delete', function (req, res, next) {
 /**
  * 更新上传pdf
  */
-var upload = multer({dest: process.env.FILE_FOLDER + 'public/files/pdf/'});
+var upload = multer({dest: 'public/files/pdf/'});
 router.post('/update',
     upload.fields([{name: 'pdf', maxCount: 1}, {name: 'img', maxCount: 1}]),
     function (req, res, next) {

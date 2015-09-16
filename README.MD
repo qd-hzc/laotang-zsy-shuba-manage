@@ -21,7 +21,11 @@ ZSYSB_PORT(web应用端口)
 
 4:服务安装 npm  install  zsysb  -g 
 
-5:直接运行如下命令启动 nohup zsysb & 
+5:which zsysb 
+
+6:cd 显示歘来的目录
+
+5:直接运行如下命令启动 nohup zsysb -u root -w xxx -schema mydbname & 
 
 6:浏览器地址栏输入 http://server ip:ZSYSB_PORT"
 
