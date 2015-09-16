@@ -18,23 +18,13 @@ var pool = mysql.createPool({
     database: process.env.MYSQL_SCHEMA || 'zsy_sb'
 });
 
-/**
- * 尹彬的本地数据库配置
- */
-var yinbinPool = mysql.createPool({
-    connectionLimit: 50,
-    host: 'localhost',
-    user: 'root',
-    password: 'ybkk1027',
-    database: 'zsy_sb'
-});
-
 exports.pool = pool;
 
 /**
  * 每次启动服务前都先判断数据库是否已经初始化,否则初始化数据库
  */
 exports.createDb = function () {
+    if (process.env.__is_mysql_init == '0')return;
     var isErr = false;
     Util.each(JSON.parse(fs.readFileSync(__dirname + '/init-db.sql', 'utf-8')),
         function (sql, index, array) {
@@ -46,6 +36,7 @@ exports.createDb = function () {
             };
             if (index == 0) {
                 sql = sql.replace('#SCHAME#', process.env.MYSQL_SCHEMA);
+                console.log(sql);
             } else config.database = process.env.MYSQL_SCHEMA || 'zsy_sb';
             var connection = mysql.createConnection(config);
             connection.query(sql, function (err, rows) {

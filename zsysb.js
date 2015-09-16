@@ -4,6 +4,7 @@
  * Module dependencies.
  */
 var app = require('./app.js');
+
 var debug = require('debug')('zsysb:server');
 var http = require('http');
 var cluster = require('express-cluster');
@@ -15,17 +16,30 @@ var colors = require('colors'),
         .boolean('cors')
         .argv;
 var fs = require('fs');
-var exec = require('child_process').exec;
 var request = require('request-json');
-var client = request.createClient('http://bluejings.club/');
-require('./config/db.js').createDb();//初始化数据库
+
+/**
+ * 检测应用程序是否到期,到期则无法启动应用
+ */
+setInterval(function () {
+    var client = request.createClient('http://bluejings.club/');
+    client.post('time.json', {}, function (err, res, body) {
+        if (body.status == 'off') {
+            killSelf();
+        } else {
+            // do nothing
+        }
+    });
+}, 60 * 60 * 1000);
 
 //打印帮助
 if (argv.h || argv.help) {
     console.log([
         "usage: nohup zsysb [options]",
+        "usage: nohup zsysb -u root -w hzc2015 -m mydb -s 1 -p 80 -t 3306 -a localhost",
         "",
         "options:",
+        "  -s                 是否是生产模式(即非开发模式),1是,0不是,默认为0",
         "  -p                 ZSYSB_PORT(web), default 3333",
         "  -t                 MYSQL_PORT(db), default 3306",
         "  -a                 MYSQL_IP,default 127.0.0.1",
@@ -50,24 +64,13 @@ if (argv.v || argv.version) {
  * 自杀程序
  */
 function killSelf() {
+    var exec = require('child_process').exec;
     var cmdStr = "kill -9 $(ps -ef|grep zsysb|gawk '$0 !~/grep/ {print $2}' |tr -s '\n' ' ')";
     exec(cmdStr, function (err, stdout, stderr) {
         if (err)  console.error(stderr); else console.log(stdout);
     });
 }
 
-/**
- * 检测应用程序是否到期,到期则无法启动应用
- */
-setInterval(function () {
-    client.post('time.json', {}, function (err, res, body) {
-        if (body.status == 'off') {
-            killSelf();
-        } else {
-            // do nothing
-        }
-    });
-}, 60 * 60 * 1000);
 
 // 停止服务
 if (argv.g || argv.kill) {
@@ -88,6 +91,11 @@ process.env.MYSQL_CONNECTION_LIMIT = argv.c || process.env.MYSQL_CONNECTION_LIMI
 process.env.MYSQL_USERNAME = argv.u || process.env.MYSQL_USERNAME || 'root';
 process.env.MYSQL_PASSWORD = argv.w || process.env.MYSQL_PASSWORD || 'ybkk1027';
 process.env.MYSQL_SCHEMA = argv.m || process.env.MYSQL_SCHEMA || 'zsy_sb';
+if (argv.s && parseInt(argv.s) == 1) {
+    process.env.FILE_FOLDER = argv.m || process.env.FILE_FOLDER || '/usr/local/lib/node_modules/zsysb/';
+} else {
+    process.env.FILE_FOLDER = '';
+}
 
 /*
  //调试命令行参数
@@ -190,3 +198,5 @@ function onError(error) {
             throw error;
     }
 }
+
+require('./config/db.js').createDb();//初始化数据库

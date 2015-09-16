@@ -9,7 +9,7 @@ var router = express.Router();
 var http = require('http');
 var request = require('request-json');
 var multer = require('multer');
-var upload = multer({dest: 'public/files/img/'});
+var upload = multer({dest: process.env.FILE_FOLDER + 'public/files/img/'});
 var fs = require('fs');
 var db = require('../../config/db');
 var utils = require('../../lib/utils.js');
@@ -108,8 +108,7 @@ router.post('/update/pre', function (req, res, next) {
 /**
  * 更新图书分类
  */
-var upload2 = multer({dest: 'public/files/img/'});
-router.post('/update', upload2.fields([{name: 'file', maxCount: 1}]), function (req, res, next) {
+router.post('/update', upload.fields([{name: 'file', maxCount: 1}]), function (req, res, next) {
     var params = req.body, newObj = {
         id: params.id,
         name: params.name,

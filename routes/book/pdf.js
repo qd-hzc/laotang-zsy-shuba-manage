@@ -83,7 +83,7 @@ router.post('/delete', function (req, res, next) {
 /**
  * 更新上传pdf
  */
-var upload = multer({dest: 'public/files/pdf/'});
+var upload = multer({dest: process.env.FILE_FOLDER + 'public/files/pdf/'});
 router.post('/update',
     upload.fields([{name: 'pdf', maxCount: 1}, {name: 'img', maxCount: 1}]),
     function (req, res, next) {
@@ -100,7 +100,7 @@ router.post('/update',
         //验证
         if (!newObj.name || newObj.name.length < 3 || newObj.name.length > 20)
             return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在3到20之间")');
-        if (!newObj.desc|| newObj.desc.length < 5 || newObj.desc.length > 100)
+        if (!newObj.desc || newObj.desc.length < 5 || newObj.desc.length > 100)
             return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在5到100之间")');
 
         var files = req.files;
@@ -135,7 +135,7 @@ router.post('/add',
         //验证
         if (!newObj.name || newObj.name.length < 3 || newObj.name.length > 20)
             return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在3到20之间")');
-        if (!newObj.desc|| newObj.desc.length < 5 || newObj.desc.length > 100)
+        if (!newObj.desc || newObj.desc.length < 5 || newObj.desc.length > 100)
             return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在5到100之间")');
 
         var files = req.files;

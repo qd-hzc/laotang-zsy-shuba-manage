@@ -107,7 +107,9 @@ module.exports.searchPdf = function (searchText, callback) {
  * 返回分类列表
  */
 module.exports.listCategory = function (callback) {
-    var selectSql = 'SELECT * FROM dic_category status = 1';
-    callbackForList.callback = callback;
-    db.pool.query(selectSql, callbackForList);
+    var selectSql = 'SELECT * FROM dic_category WHERE status = 1';
+    db.pool.query(selectSql, function (err, rows, feild) {
+        console.log(JSON.stringify(rows));
+        callback(rows);
+    });
 };

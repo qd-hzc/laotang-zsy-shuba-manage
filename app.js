@@ -7,7 +7,7 @@ var serveStatic = require('serve-static');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var RedisStore = require('connect-redis')(session);
-var rpcMiddleware = require('./lib/rpc/rpc-middleware');
+var rpc = require('./lib/rpc');
 
 var app = express();
 
@@ -64,7 +64,7 @@ var about = require('./routes/about');
 app.use('/about', about);
 //app api 接口服务
 var serviceList = require('./service/api/service');
-app.use('/rpc', rpcMiddleware('/helper.js', 'APIClient', serviceList).middleware);
+app.use('/rpc', rpc(express, '/helper.js', 'APIClient', serviceList));
 
 // =================================================================================
 

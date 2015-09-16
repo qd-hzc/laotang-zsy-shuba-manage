@@ -1,6 +1,6 @@
 {
   "name": "zsysb",
-  "version": "1.1.5",
+  "version": "1.2.1",
   "description": "中石油书吧APP管理后台",
   "author": {
     "name": "尹彬"
@@ -33,10 +33,8 @@
     "morgan": "~1.6.1",
     "multer": "^1.0.3",
     "multiparty": "^4.1.2",
+    "mustache": "0.7.3",
     "mysql": "^2.8.0",
-    "node-rpc": "0.0.2",
-    "node-thrift-pool": "^1.0.4",
-    "nodemailer": "^1.4.0",
     "opener": "^1.4.1",
     "optimist": "^0.6.1",
     "pdftohtmljs": "^0.3.7",
