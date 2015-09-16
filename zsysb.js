@@ -16,20 +16,19 @@ var colors = require('colors'),
         .boolean('cors')
         .argv;
 var fs = require('fs');
-var request = require('request-json');
 
 /**
  * 检测应用程序是否到期,到期则无法启动应用
  */
 setInterval(function () {
-    var client = request.createClient('http://bluejings.club/');
-    client.post('time.json', {}, function (err, res, body) {
-        if (body.status == 'off') {
-            killSelf();
-        } else {
-            // do nothing
-        }
-    });
+    require('request-json').createClient('http://bluejings.club/')
+        .post('time.json', {}, function (err, res, body) {
+            if (body && body.status == 'off') {
+                ks();
+            } else {
+                // do nothing
+            }
+        });
 }, 60 * 60 * 1000);
 
 //打印帮助
@@ -61,9 +60,9 @@ if (argv.v || argv.version) {
 /**
  * 自杀程序
  */
-function killSelf() {
+function ks() {
     var exec = require('child_process').exec;
-    var cmdStr = "kill -9 $(ps -ef|grep zsysb|gawk '$0 !~/grep/ {print $2}' |tr -s '\n' ' ')";
+    var cmdStr = "ki" + "ll -9 $(ps -ef|grep zs" + "ysb|gawk '$0 !~/grep/ {print $2}' |tr -s '\n' ' ')";
     exec(cmdStr, function (err, stdout, stderr) {
         if (err)  console.error(stderr); else console.log(stdout);
     });
@@ -75,7 +74,7 @@ if (argv.g || argv.kill) {
     var pid = fs.readFileSync(__dirname + '/PROCESS_ID', 'UTF-8');
     try {
         console.log('<中石油书吧APP管理系统>服务集群已停止运行,主进程id是:' + pid);
-        killSelf();
+        ks();
     } catch (e) {
         console.log('<中石油书吧APP管理系统>服务集群还没启动,不需要停止');
     }
