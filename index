@@ -100,47 +100,46 @@ process.env.MYSQL_SCHEMA = argv.m || process.env.MYSQL_SCHEMA || 'zsy_sb';
  console.log('MYSQL_SCHEMA:' + process.env.MYSQL_SCHEMA);
  */
 
+process.on('uncaughtException', function (err) {
+    //打印出错误
+    console.error(err);
+    //打印出错误的调用栈方便调试
+    console.error(err.stack);
+});
+
 /**
  * Get port from environment and store in Express.
  */
 var port = normalizePort(process.env.ZSYSB_PORT);
 app.set('port', port);
 
-var master = cluster(function (worker) {
-    /**
-     * Create HTTP server.
-     */
-    var server = http.createServer(app);
+/**
+ * Create HTTP server.
+ */
+var server = http.createServer(app);
 
-    /**
-     * Event listener for HTTP server "listening" event.
-     */
-    function onListening() {
-        var addr = server.address();
-        var bind = typeof addr === 'string'
-            ? 'pipe ' + addr
-            : 'port ' + addr.port;
-        debug('Listening on ' + bind);
-    }
+/**
+ * Event listener for HTTP server "listening" event.
+ */
+function onListening() {
+    var addr = server.address();
+    var bind = typeof addr === 'string'
+        ? 'pipe ' + addr
+        : 'port ' + addr.port;
+    debug('Listening on ' + bind);
+}
 
-    /**
-     * Listen on provided port, on all network interfaces.
-     */
-    server.listen(port);
-    server.on('error', onError);
-    server.on('listening', onListening);
-}, {
-    count: 2/* (function () {
-     if (numCPUs >= 4)
-     return numCPUs / 2;
-     else return numCPUs;
-     })()*/
-});
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
 
 // 保存当前进程id
-if (master && master.pid) {
-    console.log('<中石油书吧APP管理系统>服务集群已启动,主进程id是:' + master.pid);
-    fs.writeFileSync(__dirname + '/PROCESS_ID', master.pid);
+if (process.pid) {
+    console.log('<中石油书吧APP管理系统>服务集群已启动,主进程id是:' + process.pid);
+    fs.writeFileSync(__dirname + '/PROCESS_ID', process.pid);
 }
 
 /**
