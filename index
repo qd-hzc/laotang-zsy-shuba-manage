@@ -130,11 +130,11 @@ var master = cluster(function (worker) {
     server.on('error', onError);
     server.on('listening', onListening);
 }, {
-    count: (function () {
-        if (numCPUs >= 4)
-            return numCPUs / 2;
-        else return numCPUs;
-    })()
+    count: 2/* (function () {
+     if (numCPUs >= 4)
+     return numCPUs / 2;
+     else return numCPUs;
+     })()*/
 });
 
 // 保存当前进程id

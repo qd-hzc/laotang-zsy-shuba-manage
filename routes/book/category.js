@@ -85,8 +85,8 @@ router.post('/upload/img', upload.fields([{name: 'file', maxCount: 1}]), functio
 router.post('/add', upload.fields([{name: 'file', maxCount: 1}]), function (req, res, next) {
     var name = req.body.name, status = req.body.status, file = null, files = req.files;
 
-    if (!name || name.length < 3 || name.length > 20)
-        return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在3到20之间")');
+    if (!name || name.length < 2 || name.length > 20)
+        return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在2到20之间")');
     if (files['file'] && files['file'][0])file = files['file'][0];
     else return utils.jsonpAndEnd(res, 'parent.validate("img","必须上传封面图片")');
 

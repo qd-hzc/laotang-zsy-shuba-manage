@@ -3,6 +3,8 @@
  */
 var sp = require('../../lib/pager/select-pager');
 var db = require('../../config/db');
+var date = require('../../lib/date');
+
 /**
  *  用户查询列表，带有分页
  */
@@ -30,7 +32,19 @@ function updateStatus(id, status, callback) {
     db.pool.query('UPDATE sys_user SET status = ? WHERE id = ?', [status, id], callback);
 }
 
+/**
+ * 添加用户
+ */
+function add(user, callback) {
+    var mydate = date.now();
+    var insertSql = 'INSERT INTO `sys_user` ' +
+        ' (`username`,`password`,`company`,`department`,`name`,`phone`,`status`,`cdate`,`udate`) ' +
+        ' VALUES (?,?,?,?,?,?,?,?,?)';
+    db.pool.query(insertSql, [user.username, user.password, user.company, user.department, user.name, user.phone, user.status, mydate, mydate], callback);
+}
+
 module.exports = {
     userList: userList,
-    updateStatus: updateStatus
+    updateStatus: updateStatus,
+    add: add
 };

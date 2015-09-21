@@ -78,8 +78,118 @@
                     jQuery(grid_selector).trigger("reloadGrid");
                 }, 1000);
             });
-        }
+        };
 
+
+        /**
+         * @name 提交的请求的key的名称
+         * @message 错误消息
+         */
+        W.validate = function (name, message) {
+            $.gritter.add({
+                title: message,
+                class_name: 'gritter-info gritter-center'
+            });
+            setTimeout(function () {
+                $('.my-add-btn-id,.my-update-btn-id').show();
+                $.gritter.removeAll();
+                $('input[name="' + name + '"],textarea[name="' + name + '"]').focus();
+            }, 2000);
+        };
+
+        /**
+         * 添加用户
+         */
+        W.addUser = function (onwer, id) {
+            var addUrl = 'user/add'; // 添加请求
+            var html = '<div class="row" style="margin: 0px;padding:0px;">' +
+                '<iframe id="file_upload_iframe" name="file_upload_iframe" width="0" height="0" style="display: none;"></iframe>' +
+                '<div class="col-md-12"> ' +
+                '<form id="file_upload_form" class="form-horizontal" action="' + addUrl + '" method="post" target="file_upload_iframe">';
+
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="username">登陆账号:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<input type="text" name="username" class="form-control input-md" value=""> ' +
+            '</div> ' +
+            '</div> ';
+
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="password">登陆密码:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<input type="password" name="password" class="form-control input-md" value="123456"> ' +
+            '</div> ' +
+            '</div> ';
+
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="name">真实姓名:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<input type="text" name="name" class="form-control input-md" value=""> ' +
+            '</div> ' +
+            '</div> ';
+
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="phone">手机号:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<input type="number" name="phone" class="form-control input-md" value=""> ' +
+            '</div> ' +
+            '</div> ';
+
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="company">公司:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<input type="text" name="company" class="form-control input-md" value=""> ' +
+            '</div> ' +
+            '</div> ';
+
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="department">部门:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<input type="text" name="department" class="form-control input-md" value=""> ' +
+            '</div> ' +
+            '</div> ';
+
+            html += '<div id="progress-id" class="progress" data-percent="0%" style="display: none;">' +
+            '<div id="progress-bar-id" class="progress-bar" style="width:0%;"></div>' +
+            '</div>';
+
+            html += '<input type="hidden" name="status" value="0"/><br>' +
+            '</div>' +
+            '</form>' +
+            '</div>' +
+            '</div>';
+
+            window.__myDialog = bootbox.dialog({
+                //size: 'small',
+                title: "添加用户对话框",
+                message: html,
+                buttons: {
+                    tiJiao: {
+                        label: "新建",
+                        className: "btn-success my-add-btn-id",
+                        callback: function () {
+                            $('.my-add-btn-id').hide();
+                            $('#file_upload_form').submit();
+                            return false;
+                        }
+                    }
+                }
+            });
+        };
+
+
+        /**
+         * 添加分类的ｊｓｏｎｐ回调函数
+         */
+        window.addUserJsonp = function (id, status) {
+            window.__myDialog.modal('hide');
+            var msg = '修改失败', color = 'red';
+            if (status) msg = '修改成功', color = 'green';
+            $('.my-a-' + id).parent().empty().append('<span style="color:' + color + ';">' + msg + '<span>');
+            setTimeout(function () {
+                jQuery(grid_selector).trigger('reloadGrid');
+            }, 1000);
+        };
 
     };
 })(window);
