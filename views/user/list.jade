@@ -3,7 +3,17 @@
 extends ../layout
 
 block content
+  style.
+    .modal-footer {
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
 
+    .bootbox-body {
+      margin-bottom: -20px;
+      height: 300px !important;
+      overflow: hidden !important;
+    }
   .main-content
     #breadcrumbs.breadcrumbs
       script(type='text/javascript').
