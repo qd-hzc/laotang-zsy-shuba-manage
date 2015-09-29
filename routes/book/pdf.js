@@ -87,6 +87,7 @@ var upload = multer({dest: 'public/files/pdf/'});
 router.post('/update',
     upload.fields([{name: 'pdf', maxCount: 1}, {name: 'img', maxCount: 1}]),
     function (req, res, next) {
+        res.setTimeout(60 * 60 * 1000);
         var params = req.body;
 
         var newObj = {
@@ -123,6 +124,8 @@ router.post('/update',
 router.post('/add',
     upload.fields([{name: 'pdf', maxCount: 1}, {name: 'img', maxCount: 1}]),
     function (req, res, next) {
+        res.setTimeout(60 * 60 * 1000);
+
         var params = req.body;
 
         var newObj = {

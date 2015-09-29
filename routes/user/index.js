@@ -5,6 +5,8 @@
 
 var express = require('express');
 var router = express.Router();
+var multer = require('multer');
+var upload = multer({dest: 'public/files/excel/'});
 var userService = require('../../service/user/index');
 var utils = require('../../lib/utils');
 
@@ -76,6 +78,37 @@ router.post('/add', function (req, res, next) {
             res.send('<script>parent.addUserJsonp(' + result.insertId + ', true)</script>');
         }
     });
+});
+
+
+/**
+ *  导入ｐｄｆ文件
+ */
+router.post('/import', upload.fields([{name: 'excel', maxCount: 1}]), function (req, res, next) {
+    res.set('Content-Type', 'text/html');
+    res.setTimeout(60 * 60 * 1000);
+
+    var params = req.body, password = params.password;
+    var excel = null;
+
+    //验证
+    if (password && (password.length < 2 || password.length > 20))
+        return utils.jsonpAndEnd(res, 'parent.validate("password","密码长度须在2到20之间")');
+
+    var files = req.files;
+    if (files['excel'] && files['excel'][0])excel = files['excel'][0];
+    else return utils.jsonpAndEnd(res, 'parent.validate("excel","必须上传excel")');
+
+    userService.importExcel(password, excel, function (err) {
+        utils.jsonpAndEnd(res, 'parent.importCallback(' + !err + ')');
+    }, function (ret) {
+        var msg = ret.msg;
+        var progress = Math.round((ret.current * 100.0) / ret.total) + "%";
+        utils.jsonp(res, 'parent.showMessage("' + msg + '");parent.importProgress("' + progress + '");');
+    }, function (fieldName, message) {
+        utils.jsonpAndEnd(res, 'parent.validate("' + fieldName + '","' + message + '")');
+    });
+
 });
 
 

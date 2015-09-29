@@ -176,12 +176,102 @@
                 }
             });
         };
+        /**
+         * 导入用户
+         */
+        W.importUser = function (onwer, id) {
+            var addUrl = 'user/import'; // 添加请求
+            var html = '<div class="row" style="margin: 0px;padding:0px;">' +
+                '<iframe id="file_upload_iframe" name="file_upload_iframe" width="0" height="0" style="display: none;"></iframe>' +
+                '<div class="col-md-12"> ' +
+                '<form id="file_upload_form" class="form-horizontal" action="' + addUrl + '" method="post" enctype="multipart/form-data" target="file_upload_iframe">';
 
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="password">统一密码:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<input type="password" name="password" class="form-control input-md" placeholder="不填则使用excel中的密码"> ' +
+            '</div> ' +
+            '</div> ';
+
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="excel">选择导入文件:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<input type="file" name="excel" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"  class="form-control input-md" placeholder="必填"> ' +
+            '</div> ' +
+            '</div> ';
+
+            html += '<div class="form-group"> ' +
+            '<label class="col-md-3 control-label" for="message-id">导入日志显示:</label> ' +
+            '<div class="col-md-8"> ' +
+            '<div id="message-id" style="height: 100px;width: 80%;">' +
+            '</div>' +
+            '</div> ' +
+            '</div>';
+
+            html += '<div id="progress-id" class="progress" data-percent="0%" style="display: none;">' +
+            '<div id="progress-bar-id" class="progress-bar" style="width:0%;"></div>' +
+            '</div>';
+
+            html += '</div>' +
+            '</form>' +
+            '</div>' +
+            '</div>';
+
+            window.__myDialog = bootbox.dialog({
+                //size: 'small',
+                title: "导入用户对话框",
+                message: html,
+                buttons: {
+                    tiJiao: {
+                        label: "开始导入",
+                        className: "btn-success my-add-btn-id",
+                        callback: function () {
+                            alert('开始提交,处理时间较长,请您不要关闭窗口,耐心等待处理结束~~');
+                            $('.my-add-btn-id').hide();
+                            $('#file_upload_form').submit();
+                            return false;
+                        }
+                    }
+                }
+            });
+        };
+
+        /**
+         * 服务器导入用户成功后的ｊｓｏｎｐ回调函数
+         */
+        W.importCallback = function (status) {
+            var msg = '导入失败', color = 'red';
+            if (status) {
+                msg = '导入结束', color = 'green';
+            } else {
+                $('.my-add-btn-id').show();
+            }
+            $('#progress-id').replaceWith('<span style="font-size:13px;color:' + color + ';">' + msg + '~~~<span>');
+            //setTimeout(function () {
+            //    window.__myDialog.modal('hide');
+            //    jQuery(grid_selector).trigger('reloadGrid');
+            //}, 1500);
+        };
+
+        /**
+         * 显示导入用户的消息
+         */
+        W.showMessage = function (msg) {
+            $('#message-id').append('<div>' + msg + '</div>');
+        };
+
+        /**
+         * 导入进度的方法
+         */
+        W.importProgress = function (progress) {
+            $('#progress-id').show().attr('data-percent', progress);
+            $('#progress-bar-id').css('width', progress);
+        };
 
         /**
          * 添加分类的ｊｓｏｎｐ回调函数
          */
-        window.addUserJsonp = function (id, status) {
+        W.addUserJsonp = function (id, status) {
             window.__myDialog.modal('hide');
             var msg = '修改失败', color = 'red';
             if (status) msg = '修改成功', color = 'green';

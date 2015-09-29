@@ -89,7 +89,15 @@ block content
               i.icon-remove
           button#btn-add-category-id.btn.btn-info.btn-sm(onclick="addUser(this)",style="margin-bottom:5px;width:180px;")
             i.icon-plus.bigger-110
-            |                                     新建用户
+            |新建用户
+          span &nbsp;&nbsp;&nbsp;&nbsp;
+          button#btn-import-user-id.btn.btn-info.btn-sm(onclick="importUser(this)",style="margin-bottom:5px;width:180px;")
+            i.icon-plus.bigger-110
+            |导入用户
+          span &nbsp;&nbsp;&nbsp;&nbsp;
+          a#btn-download-user-template-id.btn.btn-info.btn-sm(href="excel/用户导入模板.xls",style="margin-bottom:5px;width:180px;")
+            i.bigger-110
+            |导入用户模板下载
           table#grid-table
           #grid-pager
           script(type='text/javascript').
