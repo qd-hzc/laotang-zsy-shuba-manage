@@ -60,6 +60,9 @@ app.use('/book/category', category);
 //pdf文件管理模块
 var pdf = require('./routes/book/pdf');
 app.use('/book/pdf', pdf);
+//批量压缩包导入模块
+var impt = require('./routes/import/index');
+app.use('/import', impt);
 //关于模块
 var about = require('./routes/about');
 app.use('/about', about);

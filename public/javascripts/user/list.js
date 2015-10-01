@@ -203,7 +203,7 @@
             html += '<div class="form-group"> ' +
             '<label class="col-md-3 control-label" for="message-id">导入日志显示:</label> ' +
             '<div class="col-md-8"> ' +
-            '<div id="message-id" style="height: 100px;width: 80%;">' +
+            '<div id="message-id" style="height: 110px;overflow: auto;">' +
             '</div>' +
             '</div> ' +
             '</div>';

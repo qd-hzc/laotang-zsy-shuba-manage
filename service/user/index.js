@@ -79,11 +79,11 @@ function importExcel(password, excel, successCb, processCb, errorCb) {
 
             db.pool.query(insertSql, a, function (err, result) {
                 var ret = {
-                    msg: '完成:' + a.join(','),
+                    msg: '<span style=\'color:blue;\'>完成</span>:' + a.join(','),
                     current: i,
                     total: length
                 };
-                if (err) ret.msg = '错误:' + a.join(',');
+                if (err) ret.msg = '<span style=\'color:red;\'>错误:</span>' + a.join(',');
                 processCb(ret);
 
                 i++;

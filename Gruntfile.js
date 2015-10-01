@@ -27,12 +27,14 @@ module.exports = function (grunt) {
                     '../dest/zsysb/routes/book/category.js': ['routes/book/category.js'],
                     '../dest/zsysb/routes/book/pdf.js': ['routes/book/pdf.js'],
                     '../dest/zsysb/routes/user/index.js': ['routes/user/index.js'],
+                    '../dest/zsysb/routes/import/index.js': ['routes/import/index.js'],
                     '../dest/zsysb/routes/about.js': ['routes/about.js'],
                     '../dest/zsysb/routes/index.js': ['routes/index.js'],
                     '../dest/zsysb/service/api/service.js': ['service/api/service.js'],
                     '../dest/zsysb/service/book/category.js': ['service/book/category.js'],
                     '../dest/zsysb/service/book/pdf.js': ['service/book/pdf.js'],
                     '../dest/zsysb/service/user/index.js': ['service/user/index.js'],
+                    '../dest/zsysb/service/import/index.js': ['service/import/index.js'],
                     '../dest/zsysb/app.js': ['app.js']
                 }
             }

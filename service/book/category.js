@@ -109,6 +109,15 @@ function load(id, cb) {
 }
 
 /**
+ * 根据ｎａｍｅ查询一条分类
+ * @param name
+ * @param cb
+ */
+function loadByName(name,cb) {
+    db.pool.query('SELECT * FROM dic_category WHERE name = ?', [name], cb);
+}
+
+/**
  * 添加一个分类的方法
  * @param name
  * @param status
@@ -140,5 +149,6 @@ module.exports = {
     categoryListForSelect: categoryListForSelect,
     update: isImgFileExist,
     load: load,
-    add: add
+    add: add,
+    loadByName:loadByName
 };

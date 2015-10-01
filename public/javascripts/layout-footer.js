@@ -57,125 +57,128 @@ jQuery(function ($) {
         evt.preventDefault();
         return false;
     });
-    jQuery(grid_selector).jqGrid({
-        //direction: "rtl",
-        url: _url,
-        postData: _postData,
-        //autoWidth:false,
-        //shrinkToFit: false,
-        //            data: grid_data,
-        datatype: "JSON",
-        mtype: "POST",//提交方式
-        height: _height,
-        colNames: _colNames,
-        sortname: _sortname,//默认排序列
-        sortorder: _sortorder,//排序方式 asc desc
-        //            colNames:['添加日期', '手机号码', '银行卡号','备注','操作'],
-        colModel: _colModel,
-        viewrecords: true,
-        rowNum: _rowNum,
-        rowList: [4, 8, 12],
-        pager: pager_selector,
-        altRows: true,
-        //toppager: true,
-        //            sortname: 'id',
-        //            sortorder: 'desc',
-        //            multiselect: true,
-        //multikey: "ctrlKey",              控制checkbox
-        multiboxonly: true,
-        loadComplete: function (xhr) {
-            //                console.log(JSON.stringify(xhr.rows));
-            if (typeof _tuBiao === 'function')_tuBiao(xhr.rows);
-            var table = this;
-            setTimeout(function () {
-                //                    styleCheckbox(table);
-                updateActionIcons(table);
-                updatePagerIcons(table);
-                enableTooltips(table);
-            }, 0);
-        },
-        editurl: $path_base + "/dummy.html",//nothing is saved
-        caption: _title,
-        autowidth: true
-    });
-    //navButtons
-    jQuery(grid_selector).jqGrid('navGrid', pager_selector,
-        { 	//navbar options
-            edit: false,
-            editicon: 'icon-pencil blue',
-            add: false,
-            addicon: 'icon-plus-sign purple',
-            del: false,
-            delicon: 'icon-trash red',
-            search: false,
-            searchicon: 'icon-search orange',
-            refresh: false,
-            refreshicon: 'icon-refresh green',
-            view: false,
-            viewicon: 'icon-zoom-in grey'
-        },
-        {
-            //edit record form
-            //closeAfterEdit: true,
-            recreateForm: true,
-            beforeShowForm: function (e) {
-                var form = $(e[0]);
-                form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                style_edit_form(form);
-            }
-        },
-        {
-            //new record form
-            closeAfterAdd: true,
-            recreateForm: true,
-            viewPagerButtons: false,
-            beforeShowForm: function (e) {
-                var form = $(e[0]);
-                form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                style_edit_form(form);
-            }
-        },
-        {
-            //delete record form
-            recreateForm: true,
-            beforeShowForm: function (e) {
-                var form = $(e[0]);
-                if (form.data('styled')) return false;
-                form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
-                style_delete_form(form);
-                form.data('styled', true);
+    if(typeof _colNames != 'undefined') {
+        jQuery(grid_selector).jqGrid({
+            //direction: "rtl",
+            url: _url,
+            postData: _postData,
+            //autoWidth:false,
+            //shrinkToFit: false,
+            //            data: grid_data,
+            datatype: "JSON",
+            mtype: "POST",//提交方式
+            height: _height,
+            colNames: _colNames,
+            sortname: _sortname,//默认排序列
+            sortorder: _sortorder,//排序方式 asc desc
+            //            colNames:['添加日期', '手机号码', '银行卡号','备注','操作'],
+            colModel: _colModel,
+            viewrecords: true,
+            rowNum: _rowNum,
+            rowList: [4, 8, 12],
+            pager: pager_selector,
+            altRows: true,
+            //toppager: true,
+            //            sortname: 'id',
+            //            sortorder: 'desc',
+            //            multiselect: true,
+            //multikey: "ctrlKey",              控制checkbox
+            multiboxonly: true,
+            loadComplete: function (xhr) {
+                //                console.log(JSON.stringify(xhr.rows));
+                if (typeof _tuBiao === 'function')_tuBiao(xhr.rows);
+                var table = this;
+                setTimeout(function () {
+                    //                    styleCheckbox(table);
+                    updateActionIcons(table);
+                    updatePagerIcons(table);
+                    enableTooltips(table);
+                }, 0);
             },
-            onClick: function (e) {
-                alert(1);
-            }
-        },
-        {
-            //search form
-            recreateForm: true,
-            afterShowSearch: function (e) {
-                var form = $(e[0]);
-                form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-                style_search_form(form);
+            editurl: $path_base + "/dummy.html",//nothing is saved
+            caption: _title,
+            autowidth: true
+        });
+
+        //navButtons
+        jQuery(grid_selector).jqGrid('navGrid', pager_selector,
+            { 	//navbar options
+                edit: false,
+                editicon: 'icon-pencil blue',
+                add: false,
+                addicon: 'icon-plus-sign purple',
+                del: false,
+                delicon: 'icon-trash red',
+                search: false,
+                searchicon: 'icon-search orange',
+                refresh: false,
+                refreshicon: 'icon-refresh green',
+                view: false,
+                viewicon: 'icon-zoom-in grey'
             },
-            afterRedraw: function () {
-                style_search_filters($(this));
+            {
+                //edit record form
+                //closeAfterEdit: true,
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                }
+            },
+            {
+                //new record form
+                closeAfterAdd: true,
+                recreateForm: true,
+                viewPagerButtons: false,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_edit_form(form);
+                }
+            },
+            {
+                //delete record form
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    if (form.data('styled')) return false;
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-titlebar').wrapInner('<div class="widget-header" />')
+                    style_delete_form(form);
+                    form.data('styled', true);
+                },
+                onClick: function (e) {
+                    alert(1);
+                }
+            },
+            {
+                //search form
+                recreateForm: true,
+                afterShowSearch: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                    style_search_form(form);
+                },
+                afterRedraw: function () {
+                    style_search_filters($(this));
+                }
+                ,
+                multipleSearch: true
+                /**
+                 multipleGroup:true,
+                 showQuery: true
+                 */
+            },
+            {
+                //view record form
+                recreateForm: true,
+                beforeShowForm: function (e) {
+                    var form = $(e[0]);
+                    form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
+                }
             }
-            ,
-            multipleSearch: true
-            /**
-             multipleGroup:true,
-             showQuery: true
-             */
-        },
-        {
-            //view record form
-            recreateForm: true,
-            beforeShowForm: function (e) {
-                var form = $(e[0]);
-                form.closest('.ui-jqdialog').find('.ui-jqdialog-title').wrap('<div class="widget-header" />')
-            }
-        }
-    )
+        )
+    }
     function style_edit_form(form) {
         //enable datepicker on "sdate" field and switches for "stock" field
         form.find('input[name=sdate]').datepicker({format: 'yyyy-mm-dd', autoclose: true})
