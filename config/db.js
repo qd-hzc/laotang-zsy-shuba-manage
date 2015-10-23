@@ -6,6 +6,7 @@
 var mysql = require('mysql');
 var fs = require('fs');
 var Util = require('underscore');
+var async = require('async');
 
 /**
  * 生产机配置
@@ -30,25 +31,29 @@ exports.pool = pool;
  * 每次启动服务前都先判断数据库是否已经初始化,否则初始化数据库
  */
 exports.createDb = function () {
-    var isErr = false;
-    Util.each(JSON.parse(fs.readFileSync(__dirname + '/init-db.sql', 'utf-8')),
-        function (sql, index, array) {
-            if (isErr)return;
-            var config = {
-                host: process.env.MYSQL_IP || 'localhost',
-                user: process.env.MYSQL_USERNAME || 'root',
-                password: process.env.MYSQL_PASSWORD || 'ybkk1027'
-            };
-            if (index == 0) {
-                sql = sql.replace('#SCHAME#', process.env.MYSQL_SCHEMA);
-                console.log(sql);
-            } else config.database = process.env.MYSQL_SCHEMA || 'zsy_sb';
-            var connection = mysql.createConnection(config);
-            connection.query(sql, function (err, rows) {
-                //console.log(sql);
-                //console.error(err);
-                if (err)isErr = true;
-                if(connection && connection.release) connection.release();
-            });
+    var sqlArray = JSON.parse(fs.readFileSync(__dirname + '/init-db.sql', 'utf-8'));
+    var index = 0;
+    async.eachSeries(sqlArray, function iterator(sql, callback) {
+        var config = {
+            host: process.env.MYSQL_IP || 'localhost',
+            user: process.env.MYSQL_USERNAME || 'root',
+            password: process.env.MYSQL_PASSWORD || 'ybkk1027'
+        };
+
+        if (index == 0) { //先创建数据库
+            sql = sql.replace('#SCHAME#', process.env.MYSQL_SCHEMA);
+        } else config.database = process.env.MYSQL_SCHEMA || 'zsy_sb';//重新建立链接采用新创建的数据库
+
+        index++;
+
+        var connection = mysql.createConnection(config);
+        connection.query(sql, function (err, rows) {
+            if (!err)console.log(sql);
+            if (connection && connection.release) connection.release();
+            callback();
         });
+    }, function done() {
+        console.log('启动成功!');
+    });
+
 };

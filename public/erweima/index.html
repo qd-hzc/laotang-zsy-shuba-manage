@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>中石油书吧APP下载</title>
+</head>
+<style rel="stylesheet" type="text/css">
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    body {
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .header {
+        text-align: center;
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .movetop {
+        width: 100%;
+        position: absolute;
+        top: 50%;
+    }
+
+    .content {
+        margin: 0 auto;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .content a {
+        width: 40%;
+        margin-right: 0px;
+    }
+
+    .footer {
+        padding: 2px 0;
+        width: 100%;
+        height: auto;
+        float: left;
+        margin-bottom: 20px;
+    }
+
+    .footer ul li {
+        margin-top: 10px;
+        width: 100%;
+        font-size: 20px !important;
+        text-align: center;
+        list-style-image: url("img/dian.png");
+        /*list-style: hiragana;*/
+    }
+
+    #weixin-tip {
+        position: fixed;
+        left: 0;
+        top: 0;
+        background: rgba(0, 0, 0, 0.8);
+        filter: alpha(opacity=80);
+        width: 100%;
+        height: 100%;
+        z-index: 100;
+    }
+
+    #weixin-tip p {
+        text-align: center;
+        margin-top: 10%;
+        padding: 0 5%;
+    }
+</style>
+
+<body>
+
+<div class="header">
+    <img src="img/shuba-bkg.png" style="width: 100%!important;"/>
+</div>
+
+<div class="movetop">
+    <div class="content">
+        <a id="android-a-id" href="http://182.92.109.194:8001/appInstall/zsysb/H5AE973D1.apk">
+            <img src="img/androidbutton.png"/>
+        </a>
+        <!-- FIXME  这个地方，需要从景安申请lcsf.ccstudy.cn证书 -->
+        <!--href="itms-services://?action=download-manifest&amp;url=https://astroway.net:8444/appInstall/LeXue/LeXue_SSL.plist"-->
+        <a id="ios-a-id" href="javascript:alert('IOS版本，近期上线，敬请期待')">
+            <img src="img/iphongbutton.png"/>
+        </a>
+    </div>
+    <!--<div class="footer">-->
+    <!--<ul>-->
+    <!--<li>界面简洁好学习</li>-->
+    <!--<li>操作方便性能好</li>-->
+    <!--</ul>-->
+    <!--</div>-->
+</div>
+
+<div id="weixin-tip" style="display:none;">
+    <p>
+        <img src="img/live_weixin.png" style="width:99%" alt="微信打开"/>
+    </p>
+</div>
+
+<script type="text/javascript">
+    /*
+     * 检查是否是采用微信扫描的
+     */
+    function is_weixin() {
+        var ua = navigator.userAgent.toLowerCase();
+        return ua.match(/MicroMessenger/i) == "micromessenger";
+    }
+
+    var isWeixin = is_weixin();
+    if (isWeixin) {
+        var weixinTip = document.getElementById('weixin-tip');
+        weixinTip.style.display = 'block';
+    }
+
+    /*
+     * 智能机浏览器版本信息:
+     */
+    var MyBrowser = {
+        versions: function () {
+            var u = navigator.userAgent, app = navigator.appVersion;
+            return {//移动终端浏览器版本信息
+                trident: u.indexOf('Trident') > -1, //IE内核
+                presto: u.indexOf('Presto') > -1, //opera内核
+                webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+                gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+                mobile: !!u.match(/AppleWebKit.*Mobile.*/) || !!u.match(/AppleWebKit/), //是否为移动终端
+                ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+                android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+                iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者QQHD浏览器
+                iPad: u.indexOf('iPad') > -1, //是否iPad
+                webApp: u.indexOf('Safari') == -1 //是否web应该程序，没有头部与底部
+            };
+        }(),
+        language: (navigator.browserLanguage || navigator.language).toLowerCase()
+    };
+
+    /*
+     * 根据浏览器版本智能决定ios、android下载链接哪个显示哪个不显示。
+     */
+    var androidA = document.getElementById('android-a-id');
+    var iosA = document.getElementById('ios-a-id');
+
+    if (MyBrowser.versions.ios || MyBrowser.versions.iPhone || MyBrowser.versions.iPad) {
+        androidA.style.display = 'none';
+    } else if (MyBrowser.versions.android) {
+        iosA.style.display = 'none';
+    }
+
+    androidA.addEventListener('click', function () {
+        androidA.innerHTML = '开始下载，请稍等片刻...';
+    });
+    iosA.addEventListener('click', function () {
+        iosA.innerHTML = '开始下载，请稍等片刻...';
+    });
+</script>
+</body>
+</html>

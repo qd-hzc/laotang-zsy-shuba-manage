@@ -13,7 +13,7 @@ var date = require('../../lib/date');
  */
 module.exports.login = function (username, password, callback) {
     if (!username) return callback({rs: false, ms: '用户名不能为空'});
-    if (username.length < 4 || username.length > 10) return callback({rs: false, ms: '用户名长度需在４到10之间'});
+    if (username.length < 4 || username.length > 15) return callback({rs: false, ms: '用户名长度需在４到15之间'});
     if (!password) return callback({rs: false, ms: '密码不能为空'});
     if (password.length < 4 || password.length > 10) return callback({rs: false, ms: '密码长度需在４到10之间'});
     var loginSql = 'SELECT id,password,status FROM sys_user WHERE username = ?';
@@ -38,7 +38,7 @@ module.exports.login = function (username, password, callback) {
  */
 module.exports.register = function (username, password, callback) {
     if (!username) return callback({rs: false, ms: '用户名不能为空'});
-    if (username.length < 4 || username.length > 10) return callback({rs: false, ms: '用户名长度需在４到10之间'});
+    if (username.length < 4 || username.length > 15) return callback({rs: false, ms: '用户名长度需在４到15之间'});
     if (!password)return callback({rs: false, ms: '密码不能为空'});
     if (password.length < 4 || password.length > 10)return callback({rs: false, ms: '密码长度需在４到10之间'});
     var checkSql = 'SELECT count(*) AS count FROM sys_user WHERE username = ?';
@@ -83,23 +83,25 @@ function callbackForList(error, row, field) {
 /**
  * 返回可用的图书列表
  * @param categoryId
+ * @param start
  * @param callback
  */
-module.exports.listPdfByPid = function (categoryId, callback) {
-    var selectSql = 'SELECT * FROM dic_pdf WHERE  dic_category_id = ? AND status = 1';
+module.exports.listPdfByPid = function (categoryId, start, callback) {
+    var selectSql = 'SELECT * FROM dic_pdf WHERE  dic_category_id = ? AND status = 1 LIMIT ?,10';
     callbackForList.callback = callback;
-    db.pool.query(selectSql, [categoryId], callbackForList);
+    db.pool.query(selectSql, [categoryId, start || 0], callbackForList);
 };
 
 /**
  * 搜索图书列表
  * @param searchText
+ * @param start
  * @param callback
  */
-module.exports.searchPdf = function (searchText, callback) {
-    var selectSql = "SELECT * FROM dic_pdf WHERE name like ? OR `desc` like ?";
+module.exports.searchPdf = function (searchText, start, callback) {
+    var selectSql = "SELECT * FROM dic_pdf WHERE name like ? OR `desc` like ? LIMIT ?,10";
     callbackForList.callback = callback;
-    db.pool.query(selectSql, ['%' + searchText + '%', '%' + searchText + '%'], callbackForList);
+    db.pool.query(selectSql, ['%' + searchText + '%', '%' + searchText + '%', start || 0], callbackForList);
 };
 
 

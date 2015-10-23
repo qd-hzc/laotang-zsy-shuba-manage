@@ -64,6 +64,7 @@ function importExcel(password, excel, successCb, processCb, errorCb) {
     parseXlsx(newExcelPath, function (err, data) {
 
         var i = 0;
+        var errLength = 0;
         var length = data.length;
 
         data.forEach(function (a) {
@@ -75,21 +76,24 @@ function importExcel(password, excel, successCb, processCb, errorCb) {
             a[6] = a[6] == '是' ? 1 : 0;
             a.push(udate);
             a.push(udate);
-            console.log(a);
 
             db.pool.query(insertSql, a, function (err, result) {
                 var ret = {
-                    msg: '<span style=\'color:blue;\'>完成</span>:' + a.join(','),
+                    msg: '<span style=\'color:blue;\'>完成</span>: ' + a.join(','),
                     current: i,
                     total: length
                 };
-                if (err) ret.msg = '<span style=\'color:red;\'>错误:</span>' + a.join(',');
+                if (err) {
+                    errLength++;
+                    if (err.code == 'ER_DUP_ENTRY')
+                        ret.msg = '<span style=\'color:red;\'>用户已存在</span>: ' + a.join(',');
+                    else ret.msg = '<span style=\'color:red;\'>错误</span>: ' + a.join(',');
+                }
                 processCb(ret);
 
                 i++;
-                console.log(i, length);
                 if (i == length) {
-                    successCb();
+                    successCb(true, '总共' + (length - 1) + '条数据,成功导入' + (length - 1 - errLength) + '条,失败' + errLength + '条');
                 }
             });
         });

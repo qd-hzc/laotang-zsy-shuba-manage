@@ -5,6 +5,7 @@ var sp = require('../../lib/pager/select-pager');
 var db = require('../../config/db');
 var fs = require('fs');
 var dateFormat = require('date-format');
+var mkdir = require('mkdir-p');
 var PDF = require('../../lib/pdf');
 var pinyin = require('../../lib/pinyin');
 
@@ -68,8 +69,9 @@ function _movePdfFile(newObj, oldObj, callback, progressCallback) {
     status || (status = oldObj.desc);
 
     var newImgPath = img;
-    if (typeof img === 'object') {
-        newImgPath = img.destination + /*(new Date().getTime())*/ id + img.originalname;
+    if (img && typeof img === 'object') {
+        newImgPath = pinyin.getPinYin(img.destination + /*(new Date().getTime())*/ id + img.originalname);
+        try{mkdir.sync(pinyin.getPinYin(img.destination));}catch(e){}
         fs.renameSync(img.path, newImgPath);
     } else {
         newImgPath = 'public/' + img;
@@ -78,14 +80,15 @@ function _movePdfFile(newObj, oldObj, callback, progressCallback) {
     var _cantContinue = false;
     var udate = dateFormat.asString('yyy-MM-dd HH:mm:ss', new Date());
     var newPdfPath = pdf;
-    if (typeof pdf === 'object') {
+    if (pdf && typeof pdf === 'object') {
         _cantContinue = true; //异步调用,则要防止updateDb的继续执行.
 
         newPdfPath = pinyin.getPinYin(pdf.destination + /*(new Date().getTime())*/ id + pdf.originalname);
+        try{mkdir.sync(pinyin.getPinYin(pdf.destination));}catch(e){}
         fs.renameSync(pdf.path, newPdfPath);
 
         var fileName = pinyin.getPinYin(pdf.originalname.substring(0, pdf.originalname.lastIndexOf('.')));
-        var htmlFolder = pdf.destination + id + fileName;
+        var htmlFolder = pinyin.getPinYin(pdf.destination + id + fileName);
 
         var folder = htmlFolder;
         if (newPdfPath != oldObj.html_dist) folder = 'public/' + oldObj.html_dist;
@@ -123,6 +126,7 @@ function _movePdfFile(newObj, oldObj, callback, progressCallback) {
  * @param progressCallback
  */
 function isPdfFileExist(newObj, cb, progressCallback) {
+    console.log('update ' + newObj.name);
     var id = newObj.id;
     var pdf = newObj.pdf;
     var img = newObj.img;
@@ -170,6 +174,7 @@ function loadPdf(id, cb) {
  * @param errorCallback
  */
 function addPdf(newObj, cb, progressCallback, errorCallback) {
+    console.log('add ' + newObj.name);
     var pdf = newObj.pdf;
     var img = newObj.img;
     var categoryId = newObj.categoryId;
@@ -192,12 +197,14 @@ function addPdf(newObj, cb, progressCallback, errorCallback) {
      * @param result
      */
     function insertCallback(err, result) {
+        console.log(err);
         var id = result.insertId + '-';
 
         // 如果上传了img,则先重命名
         var newImgPath = img;
-        if (typeof img == 'object') {
-            newImgPath = img.destination + /*(new Date().getTime())*/ id + img.originalname;
+        if (img && typeof img == 'object') {
+            newImgPath = pinyin.getPinYin(img.destination + /*(new Date().getTime())*/ id + img.originalname);
+            try{mkdir.sync(pinyin.getPinYin(img.destination));}catch(e){}
             fs.renameSync(img.path, newImgPath);
         }
 
@@ -205,14 +212,15 @@ function addPdf(newObj, cb, progressCallback, errorCallback) {
 
         // 如果上传你了pdf,则处理pdf
         var newPdfPath = pdf;
-        if (typeof pdf == 'object') {
+        if (pdf && typeof pdf == 'object') {
             _cantContinue = true; //异步调用,则要防止updateDb的继续执行.
-            newPdfPath = pdf.destination + /*(new Date().getTime())*/ id + pinyin.getPinYin(pdf.originalname);
+            newPdfPath = pinyin.getPinYin(pdf.destination + /*(new Date().getTime())*/ id + pdf.originalname);
+            try{mkdir.sync(pinyin.getPinYin(pdf.destination));}catch(e){}
             fs.renameSync(pdf.path, newPdfPath);
 
             // pdf 生成 html的目标文件夹的处理
             var fileName = pinyin.getPinYin(pdf.originalname.substring(0, pdf.originalname.lastIndexOf('.')));
-            var htmlFolder = pdf.destination + id + fileName;
+            var htmlFolder = pinyin.getPinYin(pdf.destination + id + fileName);
             fs.mkdirSync(htmlFolder);
 
             // pdf 转换
@@ -228,9 +236,12 @@ function addPdf(newObj, cb, progressCallback, errorCallback) {
                 var json = JSON.stringify(fs.readdirSync(htmlFolder));
 
                 var sql = 'UPDATE dic_pdf SET html_dist = ?, html_name = ?, json = ?, name = ?, dic_category_id = ?, `desc` = ?, status = ?, pdf_path = ?, img_path = ?, udate = ? WHERE id = ? ';
+                console.log(newPdfPath);
+                console.log(newImgPath);
                 db.pool.query(sql,
                     [htmlFolder.substr(htmlFolder.indexOf("/") + 1), id + fileName + ".html", json, name, categoryId, desc, status,
-                        newPdfPath.substr(newPdfPath.indexOf("/") + 1), newImgPath.substr(newImgPath.indexOf("/") + 1), udate, id],
+                        newPdfPath.substr(newPdfPath.indexOf("/") + 1),
+                        newImgPath.substr(newImgPath.indexOf("/") + 1), udate, id],
                     cb);
             }
         }
@@ -243,6 +254,15 @@ function addPdf(newObj, cb, progressCallback, errorCallback) {
 
 }
 
+/**
+ * 根据ｎａｍｅ查询一条ｐｄｆ
+ * @param name
+ * @param cb
+ */
+function loadByName(name, cb) {
+    db.pool.query('SELECT * FROM dic_pdf WHERE name = ?', [name], cb);
+}
+
 
 module.exports = {
     pdfList: pdfList,
@@ -250,5 +270,6 @@ module.exports = {
     update: isPdfFileExist,
     add: addPdf,
     loadPdf: loadPdf,
-    deletePdf: deletePdf
+    deletePdf: deletePdf,
+    loadByName: loadByName
 };

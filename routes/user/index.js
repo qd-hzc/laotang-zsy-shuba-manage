@@ -50,8 +50,8 @@ router.post('/add', function (req, res, next) {
     var department = req.body.department;
     var status = req.body.status || 0;
 
-    if (!username || username.length < 4 || username.length > 12)
-        return utils.jsonpAndEnd(res, 'parent.validate("username","登陆账号长度须在4到12之间")');
+    if (!username || username.length < 4 || username.length > 20)
+        return utils.jsonpAndEnd(res, 'parent.validate("username","登陆账号长度须在4到20之间")');
     if (!password || password.length < 4 || password.length > 12)
         return utils.jsonpAndEnd(res, 'parent.validate("password","登陆密码长度须在4到12之间")');
     if (name && ( name.length < 2 || name.length > 20))
@@ -86,7 +86,7 @@ router.post('/add', function (req, res, next) {
  */
 router.post('/import', upload.fields([{name: 'excel', maxCount: 1}]), function (req, res, next) {
     res.set('Content-Type', 'text/html');
-    res.setTimeout(60 * 60 * 1000);
+    res.setTimeout(3 * 60 * 1000);
 
     var params = req.body, password = params.password;
     var excel = null;
@@ -94,13 +94,14 @@ router.post('/import', upload.fields([{name: 'excel', maxCount: 1}]), function (
     //验证
     if (password && (password.length < 2 || password.length > 20))
         return utils.jsonpAndEnd(res, 'parent.validate("password","密码长度须在2到20之间")');
+    else password = '123456';
 
     var files = req.files;
     if (files['excel'] && files['excel'][0])excel = files['excel'][0];
     else return utils.jsonpAndEnd(res, 'parent.validate("excel","必须上传excel")');
 
-    userService.importExcel(password, excel, function (err) {
-        utils.jsonpAndEnd(res, 'parent.importCallback(' + !err + ')');
+    userService.importExcel(password, excel, function (isOk, msg) {
+        utils.jsonpAndEnd(res, 'parent.importCallback(' + isOk + ',"' + msg + '")');
     }, function (ret) {
         var msg = ret.msg;
         var progress = Math.round((ret.current * 100.0) / ret.total) + "%";

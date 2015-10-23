@@ -99,10 +99,10 @@ router.post('/update',
         };
 
         //验证
-        if (!newObj.name || newObj.name.length < 3 || newObj.name.length > 20)
-            return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在3到20之间")');
-        if (!newObj.desc || newObj.desc.length < 5 || newObj.desc.length > 100)
-            return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在5到100之间")');
+        if (!newObj.name || newObj.name.length < 1 || newObj.name.length > 20)
+            return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在1到20之间")');
+        //if (!newObj.desc || newObj.desc.length < 5 || newObj.desc.length > 100)
+        //    return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在5到100之间")');
 
         var files = req.files;
         if (files['pdf'] && files['pdf'][0])newObj.pdf = files['pdf'][0];
@@ -136,10 +136,10 @@ router.post('/add',
         };
 
         //验证
-        if (!newObj.name || newObj.name.length < 2 || newObj.name.length > 20)
-            return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在2到20之间")');
-        if (!newObj.desc || newObj.desc.length < 5 || newObj.desc.length > 100)
-            return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在5到100之间")');
+        if (!newObj.name || newObj.name.length < 1 || newObj.name.length > 20)
+            return utils.jsonpAndEnd(res, 'parent.validate("name","图书名称长度须在1到20之间")');
+        //if (!newObj.desc || newObj.desc.length < 5 || newObj.desc.length > 100)
+        //    return utils.jsonpAndEnd(res, 'parent.validate("desc","描述长度须在5到100之间")');
 
         var files = req.files;
 

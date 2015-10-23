@@ -43,7 +43,7 @@ block content
           // PAGE CONTENT BEGINS
           .alert.alert-info(style="display:block;")
             i.icon-hand-right
-            | 上传的压缩包必须满足一定格式，请下载下面的安装包进行参照（还未实现，先进行评估吧！）
+            | 上传的压缩包必须满足一定格式，请下载下面的安装包进行参照，另外建议在晚上进行批量上传
             button.close(data-dismiss='alert')
               //i.icon-remove
           form#import-form-id
@@ -54,14 +54,14 @@ block content
                 td
                   input#file.col-xs-10.col-sm-5.form-control.input-md(type='file' , name='file', placeholder='请选择文件')
                 td
-                  button.btn.btn-info.btn-sm(type='submit')
+                  button#batchBtn.btn.btn-info.btn-sm(type='submit')
                     i.icon-ok.bigger-110
                     | 上传
                   a.pull-right#btn-download-user-template-id(href="zip/zip-upload-template.zip",style="margin-top:5px;margin-left:30px;width:180px;")
                     i.bigger-110
                     | 压缩包参考例子下载
             .progress.progress-striped.active.hide
-              .progress-bar(role="progressbar", style="width: 30%;")
+              .progress-bar(role="progressbar", style="width: 1%;")
             .alert.hide
               button.close(type='button', data-dismiss='alert') x
               span
@@ -81,6 +81,7 @@ block content
           //    i.icon-ok.bigger-110
           //      | 上传
           hr
+          div#output(style="height:300px;overflow:scroll;")
           script(type='text/javascript').
             var $path_base = "/";//this will be used in gritter alerts containing images
           // PAGE CONTENT ENDS
@@ -99,6 +100,8 @@ block content
       var importAfterUrl = 'import/zipAfter';
 
       $('#import-form-id').on('submit', function (evt) {
+        $(window).on('beforeunload',function(){return '正在处理中，离开页面会终止处理，确定离开页面吗？';})
+        $('#batchBtn').hide();
         evt.preventDefault();
 
         $('.progress').removeClass('hide');
@@ -126,13 +129,7 @@ block content
             $('.alert').removeClass('hide');
             $('.alert').addClass('alert-success');
             $('.message').text('上传成功！');
-            console.log('上传成功');
-
-            // 发起处理ｚｉｐ的请求
-            //$.post(importAfterUrl, {path: xhr.responseText}, function (data) {
-            //  console.log(data);
-            //}, 'json');
-            console.log(xhr.responseText);
+            $('.progress').replaceWith('<span style="color:darkgreen;">压缩包上传成功</span><span>，开始后续处理，处理时间较长，请耐心等待完成，下面是实时处理进度：</span>');
 
             var html = '<div style="display: block;">' +
                     '<iframe id="file_zip_iframe" name="file_zip_iframe" width="0" height="0"></iframe>' +
@@ -146,7 +143,6 @@ block content
             $('.alert').removeClass('hide');
             $('.alert').addClass('alert-danger');
             $('.message').text('出错了……');
-            console.log('出错了……');
           }
 
         };
@@ -158,21 +154,37 @@ block content
     });
 
     /**
-     * 服务器上传图片成功后的ｊｓｏｎｐ回调函数
+     *
      */
-    var callback = function (status) {
-      var msg = '修改失败', color = 'red';
+    var finishCallback = function (status) {
+      var msg = '处理失败', color = 'red';
       if (status) {
-        msg = '修改成功', color = 'green';
+        msg = '处理已结束', color = 'green';
       } else {
-        $('.my-update-btn-id').show();
+        $('#batchBtn').show();
       }
-      alert(msg);
-      $('#progress-id').replaceWith('<span style="font-size:13px;color:' + color + ';">' + msg + '~~~<span>');
-      setTimeout(function () {
-        window.__myDialog.modal('hide');
-        jQuery(grid_selector).trigger('reloadGrid');
-      }, 1500);
+      $(window).unbind('beforeunload');
+      $('#output').append('<div style="color:' + color + ',font-size:30px;">' + msg + '</div>');
+      alert(msg)
+    };
+
+    var itemCallback = function (title, isOk) {
+      var msg = title + '处理失败';
+      var color = 'red';
+      if (isOk) {
+        msg = title + '处理完成';
+        color = 'green';
+      }
+      $('#output').append('<div style="' + color + '">' + msg + '</div>');
+    };
+
+    var progress = function (title, progress) {
+      var old = $('#my-id-' + title);
+      if (old.size() == 0) {
+        $('#output').append('<div id="my-id-' + title + '">' + title + '　已完成　' + progress + '</div>');
+      } else {
+        old.text('' + title + '　已完成　' + progress);
+      }
     };
 
     /**
@@ -189,3 +201,4 @@ block content
       $('#progress-id').show().attr('data-percent', progress);
       $('#progress-bar-id').css('width', progress);
     };
+

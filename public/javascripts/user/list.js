@@ -189,7 +189,7 @@
             html += '<div class="form-group"> ' +
             '<label class="col-md-3 control-label" for="password">统一密码:</label> ' +
             '<div class="col-md-8"> ' +
-            '<input type="password" name="password" class="form-control input-md" placeholder="不填则使用excel中的密码"> ' +
+            '<input type="text" name="password" class="form-control input-md" placeholder="默认是123456"> ' +
             '</div> ' +
             '</div> ';
 
@@ -203,7 +203,7 @@
             html += '<div class="form-group"> ' +
             '<label class="col-md-3 control-label" for="message-id">导入日志显示:</label> ' +
             '<div class="col-md-8"> ' +
-            '<div id="message-id" style="height: 110px;overflow: auto;">' +
+            '<div id="message-id" style="height: 130px;overflow: auto;">' +
             '</div>' +
             '</div> ' +
             '</div>';
@@ -239,17 +239,17 @@
         /**
          * 服务器导入用户成功后的ｊｓｏｎｐ回调函数
          */
-        W.importCallback = function (status) {
+        W.importCallback = function (status, sMsg) {
             var msg = '导入失败', color = 'red';
             if (status) {
                 msg = '导入结束', color = 'green';
             } else {
                 $('.my-add-btn-id').show();
             }
-            $('#progress-id').replaceWith('<span style="font-size:13px;color:' + color + ';">' + msg + '~~~<span>');
+            $('#progress-id').replaceWith('<span style="font-size:13px;color:' + color + ';">' + msg + '~~~<span><br/><div>' + sMsg + '</div>');
             //setTimeout(function () {
             //    window.__myDialog.modal('hide');
-            //    jQuery(grid_selector).trigger('reloadGrid');
+            jQuery(grid_selector).trigger('reloadGrid');
             //}, 1500);
         };
 
@@ -257,7 +257,7 @@
          * 显示导入用户的消息
          */
         W.showMessage = function (msg) {
-            $('#message-id').append('<div>' + msg + '</div>');
+            $('#message-id').append('<div style="width:800px;">' + msg + '</div>');
         };
 
         /**

@@ -37,7 +37,7 @@ if (argv.h || argv.help) {
         "usage: nohup zsysb [options]",
         "",
         "options:",
-        "  -p                 ZSYSB_PORT(web), default 3333",
+        "  -p                 ZSYSB_PORT(web), default 8080",
         "  -t                 MYSQL_PORT(db), default 3306",
         "  -a                 MYSQL_IP,default 127.0.0.1",
         "  -c                 MYSQL_CONNECTION_LIMIT, default 50",
@@ -81,7 +81,7 @@ if (argv.g || argv.kill) {
     process.exit();
 }
 
-process.env.ZSYSB_PORT = argv.p || process.env.ZSYSB_PORT || '3333';
+process.env.ZSYSB_PORT = argv.p || process.env.ZSYSB_PORT || '8080';
 process.env.MYSQL_PORT = argv.t || process.env.MYSQL_PORT || '3306';
 process.env.MYSQL_IP = argv.a || process.env.MYSQL_IP || '0.0.0.0';
 process.env.MYSQL_CONNECTION_LIMIT = argv.c || process.env.MYSQL_CONNECTION_LIMIT || '50';
@@ -189,5 +189,6 @@ function onError(error) {
             throw error;
     }
 }
+
 
 require('./config/db.js').createDb();//初始化数据库

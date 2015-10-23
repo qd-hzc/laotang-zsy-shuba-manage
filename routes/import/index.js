@@ -7,7 +7,6 @@ var express = require('express');
 var router = express.Router();
 var multer = require('multer');
 var fs = require('fs');
-var upload = multer({dest: 'public/files/import/'});
 var categoryService = require('../../service/book/category');
 var importService = require('../../service/import/index');
 var utils = require('../../lib/utils');
@@ -22,11 +21,12 @@ router.get('/', function (req, res, next) {
 });
 
 /**
- * ｚｉｐ导入方法
+ * ｚｉｐ上传方法
  */
 var upload = multer({dest: 'public/files/import/'});
 router.post('/zip', upload.fields([{name: 'file', maxCount: 1}]), function (req, res, next) {
-    res.setTimeout(24 * 60 * 60 * 60 * 1000);
+    req.setEncoding('utf8');//请求编码
+    res.setTimeout(24 * 60 * 60 * 1000);
     res.set('Content-Type', 'text/html');
 
     var files = req.files, zip = null;
@@ -41,17 +41,23 @@ router.post('/zip', upload.fields([{name: 'file', maxCount: 1}]), function (req,
 });
 
 /**
+ * ｚｉｐ　上传后续处理
  * ｚｉｐ　验证／解压／遍历／创建分类记录／转换ｐｄｆ到ｈｔｍｌ／创建ｐｄｆ记录
  */
 router.post('/zipAfter', function (req, res, next) {
+    req.setEncoding('utf8');//请求编码
+    res.setTimeout(24 * 60 * 60 * 1000);
+    res.set('Content-Type', 'text/html;charset=UTF-8');
     var path = req.body.path;
-    console.log(path);
-    importService.zipBiz(path, function (isOk) {
-        utils.jsonpAndEnd(res, 'parent.callback(' + isOk + ')');
-    }, function (ret) {
-        var msg = ret.msg;
+
+    importService.zipBiz(path, function (title, isOk) {
+        //do nothing
+        //utils.jsonp(res, 'parent.itemCallback(\'' + title + '\',' + isOk + ')');
+    }, function (title, ret) {
         var progress = Math.round((ret.current * 100.0) / ret.total) + "%";
-        utils.jsonp(res, 'parent.showMessage("' + msg + '");parent.progress("' + progress + '");');
+        utils.jsonp(res, 'parent.progress("' + title + '","' + progress + '");');
+    }, function (isOk) {
+        utils.jsonpAndEnd(res, 'parent.finishCallback(' + isOk + ')');
     });
 });
 
