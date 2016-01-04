@@ -2,7 +2,6 @@
  * Created by HZC on 2015/09/04.
  */
 'use strict';
-var parseXlsx = require('excel');
 var dateFormat = require('date-format');
 var fs = require('fs');
 var dirWalker = require('../../lib/myfs/digui');

@@ -25,8 +25,6 @@
     "date-format": "0.0.2",
     "debug": "~2.2.0",
     "eventproxy": "^0.3.4",
-    "excel": "^0.1.4",
-    "excel-parser": "^0.2.2",
     "express": "~4.13.1",
     "express-cluster": "0.0.3",
     "express-session": "^1.11.3",

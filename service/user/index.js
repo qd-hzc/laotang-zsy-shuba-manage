@@ -1,7 +1,6 @@
 /**
  * Created by HZC on 2015/09/04.
  */
-var parseXlsx = require('excel');
 var dateFormat = require('date-format');
 var fs = require('fs');
 var sp = require('../../lib/pager/select-pager');
