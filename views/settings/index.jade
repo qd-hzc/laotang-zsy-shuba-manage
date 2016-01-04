@@ -1,0 +1,62 @@
+//
+   Created by fy on 15-12-22.
+extends ../layout
+
+block append css
+  style.
+    .my-width {
+      width: 150px !important;
+    }
+
+    .my-width span {
+      display: none;
+    }
+
+block content
+  .main-content
+    .page-content
+      .page-header
+      .row
+        .col-xs-12
+          h3.header.smaller.lighter.green 基本设置
+          p
+            a.btn.btn-default.btn-app.radius-4.my-width(href='#')
+              i.icon-cog.bigger-230
+              | 房间设置
+              span.badge.badge-pink +3
+
+            a.btn.btn-app.btn-primary.no-radius.my-width(href='#')
+              i.icon-edit.bigger-230
+              | 消费账户设置
+              span.badge.badge-warning.badge-left 11
+
+            a.btn.btn-default.btn-app.radius-4.my-width(href='#')
+              i.icon-cog.bigger-230
+              | 游戏价格设置
+              span.badge.badge-pink +3
+
+            a.btn.btn-app.btn-primary.no-radius.my-width(href='#')
+              i.icon-edit.bigger-230
+              | 游戏界分设置
+              span.badge.badge-warning.badge-left 11
+
+            a.btn.btn-default.btn-app.radius-4.my-width(href='#')
+              i.icon-cog.bigger-230
+              | 晋级设置
+              span.badge.badge-pink +3
+
+            a.btn.btn-app.btn-primary.no-radius.my-width(href='#')
+              i.icon-edit.bigger-230
+              | 游戏优惠设置
+              span.badge.badge-warning.badge-left 11
+
+            a.btn.btn-default.btn-app.radius-4.my-width(href='#')
+              i.icon-cog.bigger-230
+              | 会员设置
+              span.badge.badge-pink +3
+
+            a.btn.btn-app.btn-primary.no-radius.my-width(href='#')
+              i.icon-edit.bigger-230
+              | 游戏优惠设置
+              span.badge.badge-warning.badge-left 11
+

@@ -1,0 +1,31 @@
+//
+   Created by fy on 15-12-22.
+    新建房间
+.row
+  .col-xs-12
+    iframe#myIframe(name='myIframe', width='0', height='0', style='display: none;')
+    form#updateForm.form-horizontal(action='#{action}',method='post',role='form',target='myIframe')
+      input(type='hidden',name='roomId',value='#{roomId}')
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='code')  房间号
+        .col-sm-9
+          input#code.col-xs-10.col-sm-5(type='text', name='code', value='#{code}', placeholder='房间号')
+      .space-4
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='seatCount')  游戏人数
+        .col-sm-9
+          input#seatCount.col-xs-10.col-sm-5(type='number', name='seatCount',value='#{seatCount}', placeholder='请填写数字')
+          //span.help-inline.col-xs-12.col-sm-7
+            span.middle 请填写数字
+      .space-4
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='seatCount')  状态
+        .col-sm-9
+          select#status.col-xs-10.col-sm-5(name='status')
+            option(value='#{status}') 请选择
+            option(value='0') 空闲
+            option(value='1') 游戏中
+            option(value='2') 删除
+          //span.help-inline.col-xs-12.col-sm-7
+            span.middle 请填写数字
+      .space-4

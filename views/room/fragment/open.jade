@@ -1,0 +1,36 @@
+//
+   Created by fy on 15-12-22.
+   开间表单
+.row
+  .col-xs-12
+    form#openForm.form-horizontal(action='#{action}',method='get',role='form',target='_blank')
+      input(type='hidden',name='roomId',value='#{roomId}')
+      input#judgmentId(type='hidden',name='judgmentId',value='#{judgments[0].id}')
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='roomCode') 房间号
+        .col-sm-9
+          input.col-xs-10.col-sm-5(type='text', name='roomCode', readonly=true, value='#{roomCode}')
+      .space-4
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='judgment') 裁判
+        .col-sm-9
+          select.col-xs-10.col-sm-5(name='judgment', onchange='document.getElementById("judgmentId").value=this.value')
+            each jm in judgments
+              option(value='#{jm.id}') #{jm.name}
+      .space-4
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='office') 游戏局
+        .col-sm-9
+          select.col-xs-10.col-sm-5(name='office')
+            option(value='1') 10/11人局
+            option(value='2') 12/13/14人局
+            option(value='3') 15/16/17/18人局
+      .space-4
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='type')  游戏类型
+        .col-sm-9
+          select.col-xs-10.col-sm-5(name='type')
+            option(value='常规赛') 常规赛
+            option(value='月度赛') 月度赛
+            option(value='年度赛') 年度赛
+      .space-4

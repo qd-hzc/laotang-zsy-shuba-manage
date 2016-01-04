@@ -73,10 +73,10 @@ function ks() {
 if (argv.g || argv.kill) {
     var pid = fs.readFileSync(__dirname + '/PROCESS_ID', 'UTF-8');
     try {
-        console.log('<中石油书吧APP管理系统>服务集群已停止运行,主进程id是:' + pid);
+        console.log('<狼人杀游戏系统>服务集群已停止运行,主进程id是:' + pid);
         ks();
     } catch (e) {
-        console.log('<中石油书吧APP管理系统>服务集群还没启动,不需要停止');
+        console.log('<狼人杀游戏系统>服务集群还没启动,不需要停止');
     }
     process.exit();
 }
@@ -87,7 +87,7 @@ process.env.MYSQL_IP = argv.a || process.env.MYSQL_IP || '0.0.0.0';
 process.env.MYSQL_CONNECTION_LIMIT = argv.c || process.env.MYSQL_CONNECTION_LIMIT || '50';
 process.env.MYSQL_USERNAME = argv.u || process.env.MYSQL_USERNAME || 'root';
 process.env.MYSQL_PASSWORD = argv.w || process.env.MYSQL_PASSWORD || 'ybkk1027';
-process.env.MYSQL_SCHEMA = argv.m || process.env.MYSQL_SCHEMA || 'zsy_sb';
+process.env.MYSQL_SCHEMA = argv.m || process.env.MYSQL_SCHEMA || 'lrs';
 
 /*
  //调试命令行参数
@@ -138,7 +138,7 @@ server.on('listening', onListening);
 
 // 保存当前进程id
 if (process.pid) {
-    console.log('<中石油书吧APP管理系统>服务集群已启动,主进程id是:' + process.pid);
+    console.log('<狼人杀游戏系统>服务集群已启动,主进程id是:' + process.pid);
     fs.writeFileSync(__dirname + '/PROCESS_ID', process.pid);
 }
 
@@ -191,4 +191,3 @@ function onError(error) {
 }
 
 
-require('./config/db.js').createDb();//初始化数据库

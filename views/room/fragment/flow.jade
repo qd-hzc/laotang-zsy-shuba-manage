@@ -1,0 +1,12 @@
+//
+   Created by fy on 15-12-30.
+
+each flow,index in flowNames
+   .timeline-item.clearfix(id='flow-#{index}')
+      .timeline-info
+         //img(src="assets/avatars/avatar1.png")
+         i.timeline-indicator.icon-food.btn.btn-success.no-hover
+      .widget-box.transparent
+         .widget-header.widget-header-small.hidden
+         .widget-body
+            .widget-main #{flow.name}

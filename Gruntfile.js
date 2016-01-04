@@ -20,11 +20,34 @@ module.exports = function (grunt) {
             }
         },
         watch: {
+            /*scripts: {
+             files: ['test/es7-test.es7.js'],
+             tasks: ['babel'],
+             options: {
+             spawn: false
+             }
+             },*/
             scripts: {
-                files: ['test/es7-test.es7.js'],
-                tasks: ['babel'],
+                files: ["**/**/fragment/*.jade"],
+                tasks: ['jade'],
                 options: {
-                    spawn: false
+                    spawn: true
+                }
+            }/*,
+            live: {
+                files: '**!/!*',
+                options: {
+                    livereload: true /!*35729*!/
+                }
+            }*/
+        },
+        jade: {
+            node: {
+                src: ["**/**/fragment/*.jade"],
+                dest: 'public/javascripts/fragment',
+                options: {
+                    client: true,
+                    compileDebug: false
                 }
             }
         },
@@ -162,13 +185,15 @@ module.exports = function (grunt) {
 
     //require('load-grunt-tasks')(grunt);
 
-    grunt.loadNpmTasks('grunt-babel');
+    //grunt.loadNpmTasks('grunt-babel');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-jade-runtime');
 
-    grunt.registerTask('my-babel-watch', 'watch');
-    grunt.registerTask('default', ['babel', 'cssmin', 'uglify', 'copy']);
+    //grunt.registerTask('my-babel-watch', 'watch');
+    grunt.registerTask('default', ['cssmin', 'uglify', 'copy']);
+    grunt.registerTask('watch', ['jade', 'watch']);
 
 };

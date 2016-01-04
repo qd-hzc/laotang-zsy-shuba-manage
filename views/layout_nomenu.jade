@@ -1,0 +1,132 @@
+//
+   Created by fy on 15-12-24.
+
+//
+   Created by yinbin on 2015/9/4.
+doctype html
+html(lang='en')
+   head
+      meta(charset='utf-8')
+      base(href='/')
+      title 狼人杀游戏系统
+      meta(name='keywords', content='中石油,书吧,狼人杀游戏系统')
+      meta(name='description', content='狼人杀游戏系统,青岛恒之城科技股份有限公司制作')
+      meta(name='viewport', content='width=device-width, initial-scale=1.0')
+      block css
+         // basic styles
+         link(href='/assets/css/bootstrap.min.css', rel='stylesheet')
+         link(rel='stylesheet', href='/assets/css/font-awesome.min.css')
+         //if IE 7
+           link(rel='stylesheet', href='/assets/css/font-awesome-ie7.min.css')
+         // page specific plugin styles
+         link(rel='stylesheet', href='/assets/css/jquery-ui-1.10.3.full.min.css')
+         link(rel='stylesheet',href='/assets/css/jquery.gritter.css')
+         link(rel='stylesheet', href='/assets/css/datepicker.css')
+         link(rel='stylesheet', href='/assets/css/ui.jqgrid.css')
+         // fonts
+         // <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" />
+         // ace styles
+         link(rel='stylesheet', href='/assets/css/ace.min.css')
+         link(rel='stylesheet', href='/assets/css/ace-rtl.min.css')
+         link(rel='stylesheet', href='/assets/css/ace-skins.min.css')
+         //if lte IE 8
+           link(rel='stylesheet', href='/assets/css/ace-ie.min.css')
+         // inline styles related to this page
+         style.
+            .main-content {
+               margin-left: 0!important;
+            }
+            .ui-jqgrid-view > .ui-jqgrid-titlebar {
+               background: lightgray;
+            }
+
+            .breadcrumbs, #sidebar-collapse, .alert, .page-header {
+               display: none;
+            }
+
+            .menu-text {
+               font-size: 18px;
+               margin-left: 10px;
+            }
+
+            .searchTable {
+               width: 100%;
+               border-collapse: separate;
+               border-spacing: 5px;
+               margin-bottom: 10px;
+            }
+
+            .searchTable tr td:nth-child(odd) {
+               text-align: right;
+               width: 100px;
+               height: 33px;
+            }
+
+            .searchTable tr td:nth-child(even) {
+               width: 200px;
+               height: 33px;
+            }
+
+            .searchTable tr td:nth-last-child(1) {
+               width: auto;
+               float: left;
+            }
+
+            .searchTable input {
+               width: 180px;
+            }
+      block script
+         // ace settings handler
+         script(src='/assets/js/ace-extra.min.js')
+         // HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries
+         //if lt IE 9
+           script(src='/assets/js/html5shiv.js')
+           script(src='/assets/js/respond.min.js')
+         // basic scripts
+         //if !IE
+         script(src='/assets/js/jquery-2.0.3.min.js')
+         // <![endif]
+         //if IE
+           script(src='/assets/js/jquery-1.10.2.min.js')
+         //if !IE
+         script(type='text/javascript').
+            window.jQuery || document.write("<script src='assets/js/jquery-2.0.3.min.js'>" + "<" + "/script>");
+         // <![endif]
+         //if IE
+           script(type='text/javascript').
+             window.jQuery || document.write("<script src='assets/js/jquery-1.10.2.min.js'>" + "<" + "/script>");
+         script(type='text/javascript').
+            if ("ontouchend" in document) document.write("<script src='assets/js/jquery.mobile.custom.min.js'>" + "<" + "/script>");
+         script(src='/assets/js/bootstrap.min.js')
+         script(src='/assets/js/typeahead-bs2.min.js')
+         // page specific plugin scripts
+         script(src='/assets/js/date-time/bootstrap-datepicker.min.js')
+         script(src='/assets/js/jqGrid/jquery.jqGrid.min.js')
+         script(src='/assets/js/jqGrid/i18n/grid.locale-en.js')
+         // ace scripts
+         script(src='/assets/js/ace-elements.min.js')
+         script(src='/assets/js/ace.min.js')
+         script(src='/assets/js/bootbox.min.js')
+         script(src='/assets/js/jquery.gritter.min.js')
+         // inline scripts related to this page
+         script(type='text/javascript', src='/javascripts/format.js')
+         //script(src='/assets/Highcharts-4.1.7/js/highcharts.js')
+         //script(src='/assets/Highcharts-4.1.7/js/modules/exporting.js')
+         script(type='text/javascript',src="/javascripts/layout-header.js")
+         script(type='text/javascript',src='/javascripts/fragment/runtime.js')
+         script(type='text/javascript',src='http://localhost:35729/livereload.js')
+   body
+      #main-container.main-container
+         script(type='text/javascript').
+            try {
+               ace.settings.check('main-container', 'fixed')
+            } catch (e) {
+            }
+         .main-container-inner
+            //a#menu-toggler.menu-toggler(href='#')
+                span.menu-text
+            block content
+         // /.main-container-inner
+      // /.main-container
+      //input#fileupload(type="file",name="files[]",data-url="/upload" multiple)
+      script(type='text/javascript',src="/javascripts/layout-footer.js")

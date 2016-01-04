@@ -1,0 +1,368 @@
+//
+   Created by fy on 15-12-23.
+
+extends ../layout
+
+block append css
+
+  //link(rel='stylesheet', href='/assets/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/assets/css/font-awesome.min.css')
+  link(rel='stylesheet', href='/gridstack/dist/gridstack.css')
+  style.
+    .grid-stack {
+      background: lightgoldenrodyellow;
+    }
+
+    .grid-stack-item-content {
+      color: #2c3e50;
+      text-align: center;
+      background-color: #18bc9c;
+      cursor: context-menu;
+      /*height: 40px!important;*/
+      /*min-height: 40px!important;*/
+    }
+
+    /*.grid-stack-item{*/
+      /*height: 40px!important;*/
+      /*min-height: 40px!important;*/
+    /*}*/
+
+block append script
+  script(src='/jquery/dist/jquery.min.js')
+  script(src='/jquery-ui/jquery-ui.min.js')
+  script(src='/assets/js/bootstrap.min.js')
+  script(src='/lodash/lodash.min.js')
+  script(src='/gridstack/dist/gridstack.js')
+  script(src='/bootstrap-contextmenu/bootstrap-contextmenu.js')
+  script(type='text/javascript').
+    var roomId = '#{roomId}';
+    $(function () {
+
+      /**
+       * 获取用户设置的房间的布局信息
+       */
+      function getLayoutJsonById(id) {
+        var layoutJson = null;
+        $.ajax({
+          type: "POST",
+          url: "room/getLayout",
+          dataType: "json",
+          async: false,
+          data: {
+            id: id
+          },
+          success: function (result) {
+            layoutJson = result;
+          },
+          error: function () {
+            return null;
+          }
+        });
+        return layoutJson;
+      }
+
+      /**
+       * 保存房间布局请求
+       */
+      function saveOrUpdateLayoutJson(id, layoutJson) {
+        $.post('room/saveLayout', {
+          id: id,
+          layoutJson: layoutJson
+        }, function (result) {
+          if (result) {
+            alert('房间布局保存成功');
+          } else {
+            alert('房间布局保存失败');
+          }
+        }, 'json');
+      }
+
+      /**
+       * 添加右键菜单事件
+       */
+      function eventContextMenu(e) {
+        e.contextmenu({
+          target: '#context-menu',
+          onItem: function (context, e) {
+            e.preventDefault();
+            var ele = $(e.target);
+            var text = ele.text();
+            if (text == '删除') {
+              GridStack.remove_grid(context);
+            } else if (text == '修改名称') {
+              showDialogForUpdateName(context, e);
+            }
+          }
+        });
+      }
+
+      /**
+       * 显示更新名称的对话框
+       *  @context 右键点击的目标元素
+       *  @ele 当前右键菜单项
+       */
+      function showDialogForUpdateName(context, ele) {
+        var dialog = $("#dialog-message").removeClass('hide').dialog({
+          modal: true,
+          title: '修改座位',
+          title_html: true,
+          buttons: [
+            {
+              text: "取消",
+              "class": "btn btn-xs",
+              click: function () {
+                $(this).dialog("close");
+              }
+            },
+            {
+              text: "确定",
+              "class": "btn btn-primary btn-xs",
+              click: function () {
+                var nf = $('#nameForm');
+                var name = nf.find('[name="name"]').val();
+                nf.get(0).reset();
+                var ele = context.html(name).parent();
+                ele.data('extras', {name: name});
+                $(this).dialog("close");
+              }
+            }
+          ]
+        }).data('context', context);
+      }
+
+      var options = {};
+      $('.grid-stack').gridstack(options);
+      var GridStack = new function () {
+        var oldLayoutJson = getLayoutJsonById(roomId);
+
+        if (oldLayoutJson) {
+          this.serialized_data = oldLayoutJson;
+        } else {
+          this.serialized_data = [
+            {
+              "x": 2,
+              "y": 0,
+              "width": 1,
+              "height": 1,
+              "name": "1"
+            },
+            {
+              "x": 3,
+              "y": 0,
+              "width": 1,
+              "height": 1,
+              "name": "2"
+            },
+            {
+              "x": 4,
+              "y": 0,
+              "width": 1,
+              "height": 1,
+              "name": "3"
+            },
+            {
+              "x": 5,
+              "y": 0,
+              "width": 1,
+              "height": 1,
+              "name": "4"
+            },
+            {
+              "x": 2,
+              "y": 1,
+              "width": 1,
+              "height": 1,
+              "name": "5"
+            },
+            {
+              "x": 3,
+              "y": 1,
+              "width": 2,
+              "height": 7,
+              "name": "桌子"
+            },
+            {
+              "x": 5,
+              "y": 1,
+              "width": 1,
+              "height": 1,
+              "name": "6"
+            },
+            {
+              "x": 2,
+              "y": 2,
+              "width": 1,
+              "height": 1,
+              "name": "7"
+            },
+            {
+              "x": 5,
+              "y": 2,
+              "width": 1,
+              "height": 1,
+              "name": "8"
+            },
+            {
+              "x": 2,
+              "y": 3,
+              "width": 1,
+              "height": 1,
+              "name": "9"
+            },
+            {
+              "x": 5,
+              "y": 3,
+              "width": 1,
+              "height": 1,
+              "name": "10"
+            },
+            {
+              "x": 2,
+              "y": 4,
+              "width": 1,
+              "height": 1,
+              "name": "11"
+            },
+            {
+              "x": 5,
+              "y": 4,
+              "width": 1,
+              "height": 1,
+              "name": "12"
+            },
+            {
+              "x": 2,
+              "y": 5,
+              "width": 1,
+              "height": 1,
+              "name": "13"
+            },
+            {
+              "x": 5,
+              "y": 5,
+              "width": 1,
+              "height": 1,
+              "name": "14"
+            },
+            {
+              "x": 2,
+              "y": 6,
+              "width": 1,
+              "height": 1,
+              "name": "15"
+            },
+            {
+              "x": 5,
+              "y": 6,
+              "width": 1,
+              "height": 1,
+              "name": "16"
+            },
+            {
+              "x": 2,
+              "y": 7,
+              "width": 1,
+              "height": 1,
+              "name": "17"
+            },
+            {
+              "x": 5,
+              "y": 7,
+              "width": 1,
+              "height": 1,
+              "name": "18"
+            },
+            {
+              "x": 3,
+              "y": 8,
+              "width": 2,
+              "height": 1,
+              "name": "裁判"
+            }
+          ];
+        }
+
+        this.grid = $('.grid-stack').data('gridstack');
+        this.remove_grid = function (ele) {
+          this.grid.remove_widget(ele.parent());
+        }.bind(this);
+        this.add_grid = function () {
+          var ele = $('<div><div class="grid-stack-item-content" data-toggle="context" data-target="#context-menu">无</div><div/>');
+          ele.data('extras', {name: '无'});
+          eventContextMenu(ele.children('.grid-stack-item-content'));
+          this.grid.add_widget(ele, {x: 1, y: 1, width: 1, height: 1});
+        }.bind(this);
+        this.load_grid = function () {
+          this.grid.remove_all();
+          var items =GridStackUI.Utils.sort(this.serialized_data);
+          _.each(items, function (node) {
+            var item = $('<div><div class="grid-stack-item-content" data-toggle="context" data-target="#context-menu">' + (node.name || "") + '</div><div/>');
+            item.data('extras', {name: node.name});
+            this.grid.add_widget(item, node.x, node.y, node.width, node.height);
+          }, this);
+          $('#saved-data').val(JSON.stringify(this.serialized_data, null, '    '));
+        }.bind(this);
+        this.save_grid = function () {
+          this.serialized_data = _.map($('.grid-stack > .grid-stack-item:visible'), function (el) {
+            el = $(el);
+            var node = el.data('_gridstack_node');
+            var extras = el.data('extras');
+            return {
+              x: node.x,
+              y: node.y,
+              width: node.width,
+              height: node.height,
+              name: extras.name
+            };
+          }, this);
+          var layoutJson = JSON.stringify(this.serialized_data, null, '    ');
+          saveOrUpdateLayoutJson(roomId, layoutJson);
+          $('#saved-data').val(layoutJson);
+        }.bind(this);
+        this.clear_grid = function () {
+          this.grid.remove_all();
+        }.bind(this);
+        $('#add-grid').click(this.add_grid);
+        $('#save-grid').click(this.save_grid);
+        $('#load-grid').click(this.load_grid);
+        $('#clear-grid').click(this.clear_grid);
+        this.load_grid();
+        return this;
+      };
+
+      // 批量添加右键菜单事件
+      eventContextMenu($('.grid-stack-item-content'));
+    });
+
+block content
+  .main-content
+    .page-content
+      .page-header
+      .row
+        .col-xs-12
+          div.pull-right(style='z-index:9999;')
+            a#add-grid.btn.btn-default(href='javascript:void;') 添加
+            a#save-grid.btn.btn-default(href='javascript:void;') 保存
+            a#load-grid.btn.btn-default.hide(href='javascript:void;') 加载
+            a#clear-grid.btn.btn-default(href='javascript:void;') 清空
+            a#back.btn.btn-default(href='javascript:window.history.back();') 返回
+          h4 设置房间(#{code})布局
+          br
+          .grid-stack
+
+          hr
+
+          #context-menu
+            ul.dropdown-menu(role='menu')
+              li
+                a(tabindex='-1', href='javascript:void(0)') 删除
+              li
+                a(tabindex='-1', href='javascript:void(0)') 修改名称
+
+          #dialog-message.ui-dialog-content.ui-widget-content(style='width: auto; min-height: 19px; max-height: none; height: auto; display:none;')
+            form#nameForm(onsubmit='return false;')
+              span.input-icon
+              input.nav-search-input(type='text', name='name', placeholder='新名称', maxlength=20)
+
+          textarea#saved-data.hide(cols='100', rows='20', readonly='readonly')
+

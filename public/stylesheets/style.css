@@ -6,14 +6,6 @@
   display: none;
 }
 
-.date, .btn, input {
-  height: 33px;
-}
-
-.btn{
-  font-size: 15px;
-}
-
 .menu-text{
   font-size: 18px;
   margin-left: 10px;
@@ -46,11 +38,3 @@
   width: 180px;
 }
 
-a {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-a:hover {
-  color: blue;
-}

@@ -1,0 +1,14 @@
+//
+   Created by fy on 15-12-28.
+    game over 对话框
+
+ul#tasks.item-list(style='overflow:auto;height:200px;')
+  each item in list
+    li.item-red.clearfix
+      label.inline
+        span.lbl=item
+      .pull-right.action-buttons
+        a.blue(href='javascript:play("#{item}")')
+          i.icon-bullhorn.bigger-130
+        span.vbar
+

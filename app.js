@@ -23,7 +23,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'node_modules')));
+//app.use(express.static(path.join(__dirname, 'node_modules')));
 app.use(serveStatic('bower_components'));
 app.use(cookieParser('fy_'));
 /*app.use(session({
@@ -51,9 +51,15 @@ app.use(cookieParser('fy_'));
 //注册登陆等
 var index = require('./routes/index');
 app.use('/', index);
+//游戏间
+var room = require('./routes/room');
+app.use('/room', room);
 //用户管理模块
 var user = require('./routes/user');
 app.use('/user', user);
+//会员管理模块
+var member = require('./routes/member');
+app.use('/member', member);
 //分类管理模块
 var category = require('./routes/book/category');
 app.use('/book/category', category);
@@ -63,6 +69,10 @@ app.use('/book/pdf', pdf);
 //批量压缩包导入模块
 var impt = require('./routes/import/index');
 app.use('/import', impt);
+//基本设置
+var settings = require('./routes/settings/index');
+app.use('/settings', settings);
+
 //关于模块
 var about = require('./routes/about');
 app.use('/about', about);

@@ -1,0 +1,85 @@
+//
+   Created by fy on 15-12-22.
+extends ../layout
+
+block append css
+
+block append script
+  script(type='text/javascript',src="javascripts/fragment/add.js")
+  script(type='text/javascript',src="javascripts/fragment/open.js")
+  script(type='text/javascript',src="javascripts/fragment/update.js")
+
+block content
+  .main-content
+    .row
+      .col-xs-8
+        #breadcrumbs.breadcrumbs
+          script(type='text/javascript').
+            try {
+              ace.settings.check('breadcrumbs', 'fixed')
+            } catch (e) {
+            }
+          ul.breadcrumb
+            li
+              i.icon-home.home-icon
+              a(href='#') Home
+            li
+              a(href='#') Tables
+            li.active jqGrid plugin
+          // .breadcrumb
+          #nav-search.nav-search
+            form.form-search
+              span.input-icon
+                input#nav-search-input.nav-search-input(type='text', placeholder='Search ...', autocomplete='off')
+                i.icon-search.nav-search-icon
+          // #nav-search
+        .page-content
+          .page-header
+          // /.page-header
+          .row
+            .col-xs-12
+              // PAGE CONTENT BEGINS
+              form#search-form-id
+                table.searchTable
+                  tr
+                    td
+                      | 房间号：
+                    td
+                      input.col-xs-10.col-sm-5(type='text' , name='code', placeholder='')
+                    td
+                    td
+                  tr
+                    td
+                      | 状态：
+                    td
+                      select#status.col-xs-12.clo-sm-10(style="width:180px;", name='status',placeholder='')
+                        option(value='') 全部
+                        option(value='0') 空闲
+                        option(value='1') 游戏中
+                    td
+                    td
+                      button.btn.btn-info.btn-sm(type='submit')
+                        i.icon-ok.bigger-110
+                        |                                     搜索
+                      button.btn.btn-sm(type='reset')
+                        i.icon-undo.bigger-110
+                        |                                     重置
+              .alert.alert-info(style='display: none;')
+                i.icon-hand-right
+                |                     专业报名人数：
+                span#zybmrs-id
+                | 人
+                button.close(data-dismiss='alert', style='display: none;')
+                  i.icon-remove
+              button#btn-add-category-id.btn.btn-info.btn-sm(onclick="addRoom(this)",style="margin-bottom:5px;width:180px;")
+                i.icon-plus.bigger-110
+                |                                     新建房间
+              table#grid-table
+              #grid-pager
+              script(type='text/javascript').
+                var $path_base = "/";//this will be used in gritter alerts containing images
+      .col-xs-3
+        p jlkasdfjlk
+  style.
+  script(type='text/javascript',src="javascripts/room/index.js")
+  script(type="text/javascript") roomPageInit();

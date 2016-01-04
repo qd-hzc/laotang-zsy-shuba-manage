@@ -1,0 +1,20 @@
+//
+   Created by fy on 15-12-28.
+    声音播放列表
+div(style='overflow:auto;max-height:200px;')
+  div
+    label(for='tt') 请输入需要播放的文字
+    textarea#tt.autosize-transition.form-control(style='overflow: hidden; word-wrap: break-word; resize: horizontal; height: 50px;')
+    button.btn.btn-sm.btn-success(type='button',onclick='javascript:play(document.getElementById("tt").value)') 播放
+      i.icon-arrow-right.icon-on-right.bigger-110
+  hr
+  ul#tasks.item-list
+    each audio in audios
+      li.item-red.clearfix
+        label.inline
+          span.lbl=audio
+        .pull-right.action-buttons
+          a.blue(href='javascript:play("#{audio}")')
+            i.icon-bullhorn.bigger-130
+          span.vbar
+

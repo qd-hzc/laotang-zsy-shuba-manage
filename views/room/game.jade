@@ -1,0 +1,251 @@
+//
+   Created by fy on 15-12-24.
+extends ../layout_nomenu
+
+block append css
+  //link(rel='stylesheet', href='/assets/css/bootstrap.min.css')
+  link(rel='stylesheet', href='/assets/css/font-awesome.min.css')
+  link(rel='stylesheet', href='/gridstack/dist/gridstack.css')
+  link(rel='stylesheet', href='/gridstack/dist/gridstack-extra.css')
+  style.
+    /*禁止鼠标移动座位*/
+    .ui-resizable-handle {
+      display: none;
+    }
+
+    .grid-stack {
+      margin: 30px 0;
+    }
+
+    .grid-stack-item-content {
+      color: #2c3e50;
+      text-align: center;
+      background-color: #18bc9c;
+      cursor: context-menu;
+    }
+
+    html, body, .main-container, .main-content, .page-content {
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .timeline-container {
+      height: 300px;
+      overflow: scroll;
+      padding-right: 10px;
+      padding-bottom: 20px;
+    }
+
+    .my-btn {
+      margin: 4px;
+    }
+
+    .my-space {
+      margin-left: 20px;
+    }
+
+    .label-info, .badge-info {
+      background-color: #3a87ad !important;
+    }
+
+    .my-badge {
+      text-shadow: none;
+      font-size: 12px;
+      padding-top: 4px;
+      padding-bottom: 1px;
+      font-weight: normal;
+      line-height: 20px;
+      height: 20px;
+      width: 20px;
+      background-color: #abbac3 !important;
+    }
+
+    .my-badge {
+      min-width: 15px;
+      font-size: 12px;
+      font-weight: bold;
+      line-height: 1;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      background-color: #999;
+      border-radius: 10px;
+    }
+
+    .my-badge-si {
+      position: absolute !important;
+      top: -2px;
+      right: -2px;
+      padding: 1px 3px;
+      font-size: 12px;
+      float: right;
+      text-shadow: none;
+      line-height: 20px;
+      height: 20px;
+      width: 20px;
+      background-color: red !important;
+      min-width: 15px;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: 10px;
+    }
+
+    .my-badge-biao {
+      position: absolute !important;
+      top: -2px;
+      left: -2px;
+      padding: 1px 3px;
+      font-size: 12px;
+      float: left;
+      text-shadow: none;
+      line-height: 20px;
+      height: 20px;
+      width: 20px;
+      background-color: lightgreen !important;
+      min-width: 15px;
+      font-weight: bold;
+      color: #fff;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: baseline;
+      border-radius: 10px;
+    }
+
+    .timeline-container:before {
+      height: 500px;
+    }
+block append script
+  script(src='/jquery-ui/jquery-ui.min.js')
+  script(src='/lodash/lodash.min.js')
+  script(src='/gridstack/dist/gridstack.js')
+  script(src='/bootstrap-contextmenu/bootstrap-contextmenu.js')
+  script(src='/assets/xunfei/md5.js')
+  script(src='/assets/xunfei/socket.io.js')
+  script(src='/assets/xunfei/fingerprint.js')
+  script(src='/assets/xunfei/tts.min.js')
+  script(src='/jquery-timer/jquery.timer.js')
+  script(src='/jquery-timer/res/demo.js')
+  script(type='text/javascript').
+    var roomId = '#{roomId}';
+    var gameId = '#{gameId}';
+    var office = '#{office}';//游戏局
+    var type = '#{type}';//比赛类型
+
+    // todo 狼的的数量
+    // todo 身份指的是非狼和平民
+    var langCount = 4;
+    var shenFenCount = 6;
+
+  script(src='/javascripts/fragment/runtime.js')
+  script(src='/javascripts/fragment/audio.js')
+  script(src='/javascripts/fragment/info.js')
+  script(src='/javascripts/fragment/gameOver.js')
+  script(src='/javascripts/fragment/flow.js')
+  script(src='/javascripts/room/xunfei.js')
+  script(src='/javascripts/room/game.js')
+
+
+block content
+  .main-content
+    .page-content
+      .page-header
+      .row
+        .col-xs-8
+
+          div
+            h3.header.smaller.lighter.green
+              span#juLabel.my-space #{office}
+              span.my-space #{roomCode}号房
+              span.my-space #{type}
+              span.my-space.pull-right 时间：
+                span#stopwatch(onclick='Example1.Timer.toggle();') 00:00:00
+
+          .grid-stack.grid-stack-8
+
+          #context-menu
+            ul.dropdown-menu(role='menu')
+              li
+                a(tabindex='-1', href='javascript:void(0)') 座次登记
+              li
+                a(tabindex='-1', href='javascript:void(0)') 更改身份
+              li
+                a(tabindex='-1', href='javascript:void(0)') 罚分
+              li
+                a(tabindex='-1', href='javascript:void(0)') 杀掉
+              li
+                a(tabindex='-1', href='javascript:void(0)') 救活
+              li
+                a(tabindex='-1', href='javascript:void(0)') 爆狼
+              li
+                a(tabindex='-1', href='javascript:void(0)') 告知发言
+              li
+                a(tabindex='-1', href='javascript:void(0)') 禁止发言
+              li
+                a(tabindex='-1', href='javascript:void(0)') 乌鸦标记
+              li
+                a(tabindex='-1', href='javascript:void(0)') 公投出局
+              li
+                a(tabindex='-1', href='javascript:void(0)') 误睁眼出局
+              li
+                a(tabindex='-1', href='javascript:void(0)') 购买商品
+              li
+                a(tabindex='-1', href='javascript:void(0)') 选为村长
+
+
+          #dialog-message.ui-dialog-content.ui-widget-content(style='width: auto; min-height: 19px; max-height: none; height: auto; display:none;')
+            form#nameForm(onsubmit='return false;')
+              span.input-icon
+              input.nav-search-input(type='text', name='name', placeholder='新名称', maxlength=20)
+
+          #dialog-register.ui-dialog-content.ui-widget-content(style='width: auto; min-height: 19px; max-height: none; height: auto; display:none;')
+            form#memberForm(onsubmit='return false;')
+              span.input-icon
+              input#memberCode.nav-search-input(type='text', name='memberCode', placeholder='会员账号', maxlength=20)
+
+          #dialog-penalty.ui-dialog-content.ui-widget-content(style='width: auto; min-height: 19px; max-height: none; height: auto; display:none;')
+            form#penaltyForm(onsubmit='return false;')
+              span.input-icon
+              input#penalty(type='number', name='penalty', placeholder='请填写需要处罚的分数', maxlength=10)
+
+          #dialog-shenfen.ui-dialog-content.ui-widget-content(style='width: auto; min-height: 19px; max-height: none; height: auto; display:none;')
+            form#shenfenForm(onsubmit='return false;')
+              div
+                label(for='shenfen') 请选择新身份
+                select#shenfen.form-control(name='shenfen')
+                  option(value='狼') 狼人
+                  option(value='猎') 猎人
+                  option(value='痴') 痴呆
+                  option(value='巫') 巫婆
+                  option(value='预') 预言家
+                  option(value='鸦') 乌鸦
+                  option(value='民') 平民
+
+          #dialog-cunzhang.ui-dialog-content.ui-widget-content(style='width: auto; min-height: 19px; max-height: none; height: auto; display:none;')
+            form#cunzhangForm(onsubmit='return false;')
+              div
+                label(for='zuowei') 请选择村长的座位号
+                select#zuowei.form-control(name='zuowei')
+
+          textarea#saved-data.hide(cols='100', rows='20', readonly='readonly')
+          #audio.hide
+        .col-xs-4
+          div
+            h3.header.smaller.lighter.green 游戏流程
+            #timeline.timeline-container
+              .timeline-label
+                span.label.label-success.arrowed-in-right.label-lg
+                  b 开始
+              #flowContent.timeline-items
+          div
+            h3.header.smaller.lighter.green 操作面板
+            p
+              buntton.btn.btn-info.my-btn 开始
+              buntton.btn.btn-info.my-btn 下一环节
+              buntton.btn.btn-info.my-btn 隐藏身份
+              buntton.btn.btn-info.my-btn 语音播报
+              //buntton.btn.btn-info.my-btn 下局占位
+              buntton.btn.btn-info.my-btn 打开大屏

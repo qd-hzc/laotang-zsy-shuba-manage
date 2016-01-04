@@ -1,0 +1,19 @@
+//
+   Created by fy on 15-12-22.
+    新建房间
+.row
+  .col-xs-12
+    iframe#myIframe(name='myIframe', width='0', height='0', style='display: none;')
+    form#addForm.form-horizontal(action='#{action}',method='post',role='form',target='myIframe')
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='code')  房间号
+        .col-sm-9
+          input#code.col-xs-10.col-sm-5(type='text', name='code', placeholder='房间号')
+      .space-4
+      .form-group
+        label.col-sm-3.control-label.no-padding-right(for='seatCount')  游戏人数
+        .col-sm-9
+          input#seatCount.col-xs-10.col-sm-5(type='number', name='seatCount', placeholder='请填写数字')
+          //span.help-inline.col-xs-12.col-sm-7
+            span.middle 请填写数字
+      .space-4
